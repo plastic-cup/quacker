@@ -6,13 +6,13 @@
   "scripts": {
     "test": "node test/*.js",
     "start": "nodemon server.js",
-    "coverrage": "./node_modules/.bin/istanbul cover ./test/*.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "coverage": "./node_modules/.bin/istanbul cover ./test/*.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "jshint": "jshint -c .jshintrc --exclude-path .gitignore .",
     "codeclimate": "CODECLIMATE_REPO_TOKEN=2c649d2c03f0a397f5fb843024798c0ff07030cbeb78c49d5ca30511a49a94cb codeclimate < ./coverage/lcov.info"
   },
   "pre-commit": [
     "jshint",
-    "coverrage"
+    "coverage"
   ],
   "repository": {
     "type": "git",
@@ -38,5 +38,5 @@
     "istanbul": "^0.3.14",
     "jshint": "^2.8.0",
     "pre-commit": "^1.0.7"
-  }
+    }
 }
