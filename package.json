@@ -1,0 +1,29 @@
+{
+  "name": "quacker",
+  "version": "1.0.0",
+  "description": "moneymoneymoney",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/*.js",
+    "start": "nodemon server.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plastic-cup/quacker.git"
+  },
+  "keywords": [
+    "quax",
+    "tweets",
+    "crud",
+    "learning",
+    "fac",
+    "ripoff",
+    "riches"
+  ],
+  "author": "plastic-cup",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plastic-cup/quacker/issues"
+  },
+  "homepage": "https://github.com/plastic-cup/quacker"
+}
