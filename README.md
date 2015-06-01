@@ -1,0 +1,2 @@
+# quacker
+A NEW AND REVOLUTIONARY IDEA
