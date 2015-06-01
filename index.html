@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>yo</title>
+  </head>
+  <body>
+    <p id ='postbox'>hey</p>
+    <script type="text/javascript">
+    (function(){
+      var postReq = new XMLHttpRequest();
+      postReq.open('POST', '/foo');
+      postReq.onreadystatechange = function(){
+        var text;
+        if (postReq.readyState === 4){
+          console.log('hello');
+          text = postReq.responseText;
+          document.getElementById('postbox').innerHTML = text;
+        }
+      }
+      postReq.send('myString!!');
+    }());
+    </script>
+  </body>
+</html>

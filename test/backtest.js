@@ -16,3 +16,7 @@ assert.equal(endpoints['DELETE']({url: 'tweet'}, {}, function(err, data){
 assert.equal(endpoints.homepage({url: 'tweet'}, {}, function(err, data){
     return err || data;
 }), 'YAY');
+
+assert.equal(endpoints.FOO({url: 'tweet'}, {}, function(err, data){
+    return err || data;
+}), 'FOO');

@@ -14,6 +14,8 @@ http.createServer(function(req, res){
                 res.end(data);
             }
         });
+    } else if (req.url.indexOf('foo') > -1) {
+      endpoints.FOO(req, res, function(err, data){return;});
     } else {
         endpoint(req, res, function(err, data){
             if (err){
