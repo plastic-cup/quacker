@@ -8,4 +8,4 @@ addons:
    code_climate:
    repo_token: 2c649d2c03f0a397f5fb843024798c0ff07030cbeb78c49d5ca30511a49a94cb
 after_script:
--npm run code_climate
+- npm run code_climate
