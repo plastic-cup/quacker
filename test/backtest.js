@@ -1,7 +1,9 @@
 var assert = require('assert');
 var http = require('http');
+var fs = require('fs');
 var endpoints = require('../endpoints.js'),
-    testReq;
+    testReq,
+    testRes;
 
 assert.equal(endpoints.GET({url: 'tweet'}, {}, function(err, data){
     return err || data;
@@ -15,14 +17,28 @@ assert.equal(endpoints.DELETE({url: 'tweet'}, {}, function(err, data){
     return err || data;
 }), 'YAY');
 
-assert.equal(endpoints.homepage({on: function(){return;}}, {}, function(err, data){
-    return err || data;
-}), 'YAY');
 
-testReq = http.request({'url':'foo', 'port':8000}, function(res){
-  res.on('end', function(){assert.ok(true);});
+endpoints.homepage({}, {}, function(err, data){
+    assert.ok(data);
 });
 
-testReq.write('stringene');
+testReq = {
+  on: function(event, callback){
+    this[event] = callback;
+  },
+};
 
-testReq.end();
+testRes = {
+  write: function(stuff){
+    this.things = stuff;
+  },
+
+  end: function(){
+    return this.things;
+  }
+};
+
+endpoints.FOO(testReq, testRes, function(err, data){
+  testReq.data(data);
+  assert.ok(testReq.end());
+});

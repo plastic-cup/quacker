@@ -10,8 +10,7 @@ endpoints.FOO = function(req, res, callback){
 
     req.on('end', function(err, data){
       res.write(body);
-      console.log(req);
-      res.end();
+      return res.end();
     });
 
     return callback(null, 'FOO');
@@ -34,11 +33,9 @@ endpoints.DELETE = function(req, res, callback){
 };
 
 endpoints.homepage = function(req, res, callback){
-    console.log(__dirname);
     fs.readFile(__dirname + '/index.html',function(err,data){
-      res.end(data.toString());
+      callback(err,data.toString());
     });
-    return callback(null, 'YAY');
 };
 
 module.exports = endpoints;
