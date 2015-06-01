@@ -1,22 +1,28 @@
 var assert = require('assert');
-var endpoints = require('../endpoints.js');
+var http = require('http');
+var endpoints = require('../endpoints.js'),
+    testReq;
 
-assert.equal(endpoints['GET']({url: 'tweet'}, {}, function(err, data){
+assert.equal(endpoints.GET({url: 'tweet'}, {}, function(err, data){
     return err || data;
 }), 'BOO');
 
-assert.equal(endpoints['POST']({url: 'tweet'}, {}, function(err, data){
+assert.equal(endpoints.POST({url: 'tweet'}, {}, function(err, data){
     return err || data;
 }), 'YAY');
 
-assert.equal(endpoints['DELETE']({url: 'tweet'}, {}, function(err, data){
+assert.equal(endpoints.DELETE({url: 'tweet'}, {}, function(err, data){
     return err || data;
 }), 'YAY');
 
-assert.equal(endpoints.homepage({url: 'tweet'}, {}, function(err, data){
+assert.equal(endpoints.homepage({on: function(){return;}}, {}, function(err, data){
     return err || data;
 }), 'YAY');
 
-assert.equal(endpoints.FOO({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'FOO');
+testReq = http.request({'url':'foo', 'port':8000}, function(res){
+  res.on('end', function(){assert.ok(true);});
+});
+
+testReq.write('stringene');
+
+testReq.end();
