@@ -2,7 +2,6 @@ var http = require("http"),
     endpoints = require("./endpoints.js");
 
 http.createServer(function(req, res){
-
     var root = req.method,
         endpoint = endpoints[root];
 

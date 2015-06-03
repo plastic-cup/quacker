@@ -9,11 +9,11 @@ endpoints.FOO = function(req, res, callback){
     });
 
     req.on('end', function(err, data){
-      res.write(body);
-      return res.end();
+      res.writeHead(203);
+      res.end();
+      callback(null, body);
     });
 
-    return callback(null, 'FOO');
 };
 
 endpoints.POST = function(req, res, callback){
