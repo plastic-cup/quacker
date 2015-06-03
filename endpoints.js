@@ -1,17 +1,17 @@
 var endpoints = {},
     fs = require('fs');
 
-endpoints['POST'] = function(req, res, callback){
+endpoints.POST = function(req, res, callback){
     //Create (POST) a tweet
     return callback(null, 'YAY');
 };
 
-endpoints['GET'] = function(req, res, callback){
+endpoints.GET = function(req, res, callback){
     //return specified tweet
     return callback(null, 'BOO');
 };
 
-endpoints['DELETE'] = function(req, res, callback){
+endpoints.DELETE = function(req, res, callback){
     //delete tweet
     return callback(null, 'YAY');
 };
