@@ -1,16 +1,16 @@
 var endpoints = {},
     fs = require('fs');
 
-endpoints.POST = function(req, res, callback){
+endpoints['/main POST'] = function(req, res, callback){
   return callback(null, 'YAY');
 };
 
-endpoints.GET = function(req, res, callback){
+endpoints['/main GET'] = function(req, res, callback){
     //return specified tweet
     return callback(null, 'BOO');
 };
 
-endpoints.DELETE = function(req, res, callback){
+endpoints['/main DELETE'] = function(req, res, callback){
     //delete tweet
     return callback(null, 'YAY');
 };
