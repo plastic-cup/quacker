@@ -16,6 +16,8 @@ endpoints.FOO = function(req, res, callback){
 
 };
 
+//
+
 endpoints.POST = function(req, res, callback){
   //create (POST) a tweet
 
