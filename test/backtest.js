@@ -1,18 +1,18 @@
 var assert = require('assert');
 var endpoints = require('../endpoints.js');
 
-assert.equal(endpoints['GET']({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'BOO');
+endpoints.GET({url: 'tweet'}, {}, function(err, data){
+    assert.ok(data);
+});
 
-assert.equal(endpoints['POST']({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'YAY');
+endpoints.POST({url: 'tweet'}, {}, function(err, data){
+    assert.ok(data);
+});
 
-assert.equal(endpoints['DELETE']({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'YAY');
+endpoints.DELETE({url: 'tweet'}, {}, function(err, data){
+    assert.ok(data);
+});
 
-assert.equal(endpoints.homepage({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'YAY');
+endpoints.homepage({url: 'tweet'}, {}, function(err, data){
+    assert.ok(data);
+});
