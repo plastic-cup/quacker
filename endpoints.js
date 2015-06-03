@@ -2,8 +2,6 @@ var endpoints = {},
     fs = require('fs');
 
 endpoints.POST = function(req, res, callback){
-  //create (POST) a tweet
-
   return callback(null, 'YAY');
 };
 

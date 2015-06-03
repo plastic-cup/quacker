@@ -6,10 +6,6 @@ var endpoints = require('../endpoints.js'),
     testReq,
     testRes;
 
-// assert.equal(endpoints.GET({url: 'tweet'}, {}, function(err, data){
-//     return err || data;
-// }), 'BOO');
-
 endpoints.GET.apply(null, testReqAndRes({method:'GET'}, function(err, data){
   return data;
 }));
