@@ -2,8 +2,7 @@ var endpoints = {},
     fs = require('fs');
 
 endpoints.POST = function(req, res, callback){
-    //Create (POST) a tweet
-    return callback(null, 'YAY');
+  return callback(null, 'YAY');
 };
 
 endpoints.GET = function(req, res, callback){
@@ -17,8 +16,9 @@ endpoints.DELETE = function(req, res, callback){
 };
 
 endpoints.homepage = function(req, res, callback){
-    //gets 10? most recent tweets
-    return callback(null, 'YAY');
+    fs.readFile(__dirname + '/index.html',function(err,data){
+      callback(err,data.toString());
+    });
 };
 
 module.exports = endpoints;
