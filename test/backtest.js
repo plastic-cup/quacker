@@ -6,12 +6,12 @@ var endpoints = require('../endpoints.js'),
     testReq,
     testRes;
 
-assert.equal(endpoints.GET({url: 'tweet'}, {}, function(err, data){
-    return err || data;
-}), 'BOO');
+// assert.equal(endpoints.GET({url: 'tweet'}, {}, function(err, data){
+//     return err || data;
+// }), 'BOO');
 
-endpoints.GET(testReq({method:'GET'}, function(err, data){
-  return;
+endpoints.GET.apply(null, testReqAndRes({method:'GET'}, function(err, data){
+  return data;
 }));
 
 assert.equal(endpoints.POST({url: 'tweet'}, {}, function(err, data){
