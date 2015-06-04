@@ -16,18 +16,12 @@ endpoints['/main POST'] = function(req, res, callback){
     return callback(null, 'YAY');
 };
 
-endpoints['/main GET'] = function(req, res, callback){
-    //return specified tweet
-    var quax = require('./quax.js'),
-        quaxJSON = {"quax" : [
+endpoints['/main GET'] = function(req, res, next){
+    //return ALL tweets
+    req._quaxJSON = JSON.stringify(quax);
 
-        ]};
-
-    for (var key in quax){
-        quaxJSON.quax.push({"timestamp" : quax.key["timestamp"], "quack" : quax.key["quack"]});
-    }
-
-    return callback(null, quaxJSON);
+    next()
+    //return callback(null, quaxJSON);
 };
 
 endpoints['/main DELETE'] = function(req, res, callback){
