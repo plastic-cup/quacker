@@ -15,7 +15,7 @@ function assertWell(assertionMethod){
   }
 }
 
-endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, data){
+endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(){
     console.log("# Does response contain an element with tweet class?");
     assertWell(assert.ok, data.indexOf("class='tweet'") > -1);
 }));
@@ -23,13 +23,13 @@ endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, d
 var currentQuax = Object.keys(quax).length;
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack'}, function(err, data){
     console.log("# Has a new quack been created?");
-    assert.equal(Object.keys(quax).length, currentQuax + 1);
+    assertWell(assert.equal, Object.keys(quax).length, currentQuax + 1);
 }));
 
 var currentQuax = Object.keys(quax).length;
 endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', futureProperty: {id: 3}}, function(err, data){
     console.log("# Has a quack been deleted?");
-    assert.equal(Object.keys(quax).length, currentQuax - 1);
+    assertWell(assert.equal, Object.keys(quax).length, currentQuax - 1);
 }));
 
 
@@ -37,7 +37,7 @@ endpoints.homepage({}, {}, function(err, data){
   console.log("# Do we get something from the homepage?");
   fs.readFile(__dirname + '../index.html', function(err, index){
     if (err) return new Error('uhoh');
-    assert.equal(data, index.toString());
+    assertWell(assert.equal, data, index.toString());
   });
 });
 
