@@ -12,12 +12,12 @@ We want to make an app that's good for publishing short thoughts and seeing othe
 
 ## What
 
-  + [ ] An app with Create, Read and Delete endpoints
+  + [x] An app with Create, Read and Delete endpoints
 
   + [ ] Quax will be persistently available
 
   + [ ] Some authentication process
-    + [ ] Cookies
+    + [x] Cookies
 
   + [ ] LIVE on HEROKU! Quack.
 
@@ -26,9 +26,20 @@ We want to make an app that's good for publishing short thoughts and seeing othe
 
 ## How
 
-  + [ ] CR-D accessed using HTTP `POST`, `GET` and `DELETE` respectively.
+### How to run & test it
+
+We are currently not on a tight publishing schedule on NPM. Therefore, we suggest cloning this repo and running `npm install` in the directory to install all dependencies and dev-dependencies. To run the app, hit `npm run start`. You can then check us out on `localhost:8000`. You won't see a lot at the moment. The good stuff is in the tests. We tend to be several failing tests ahead of our functionality. To see the latest failing tests, `git checkout thorough-tests`. Have a look in our test file to see the guts. `npm test` to see the output.
+
+There are several cool things to checkout in the test file:
+  + A function we wrote to keep the tests running after the first failed assertion
+  + A function we wrote to spoof HTTP request and responses
+  + A lot of uses of the `call` and `apply` function methods
+  + [ ] Coming soon! Redefining methods of requests so that when the tests run the endpoint functions, the endpoints run tests! Banging.
+
+### How it's made
+  + [x] CR-D accessed using HTTP `POST`, `GET` and `DELETE` respectively.
 
   + Quax will be stored in Redis.
-    + [ ] Stored in memory
+    + [x] Stored in memory
     + [ ] Stored in file system
     + [ ] Stored in Redis
