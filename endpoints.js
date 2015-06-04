@@ -23,9 +23,7 @@ endpoints['/main POST'] = function(req, res, callback){
 endpoints['/main GET'] = function(req, res, next){
     //return ALL tweets
     req._quaxJSON = JSON.stringify(quax);
-
-    next()
-    //return callback(null, quaxJSON);
+    next();
 };
 
 endpoints['/main DELETE'] = function(req, res, callback){
