@@ -3,12 +3,16 @@ var http = require('http');
 var fs = require('fs');
 var stream = require('stream');
 var endpoints = require('../endpoints.js'),
+    allPass = true,
     testReq,
     testRes;
 
 function assertWell(assertionMethod){
   try {assertionMethod.call([].slice.call(arguments).slice(1));}
-  catch (e) { console.error(e); }
+  catch (e) {
+    allPass = false;
+    console.error(e);
+  }
 }
 
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, data){
@@ -36,6 +40,8 @@ endpoints.homepage({}, {}, function(err, data){
     assert.equal(data, index.toString());
   });
 });
+
+assert(allPass);
 
 function testReqAndRes(options, callback){
     var result = new stream.Readable();
