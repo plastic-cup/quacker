@@ -6,9 +6,14 @@ var endpoints = require('../endpoints.js'),
     testReq,
     testRes;
 
+function assertWell(assertionMethod){
+  try {assertionMethod.call([].slice.call(arguments).slice(1));}
+  catch (e) { console.error(e); }
+}
+
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, data){
     console.log("# Does response contain an element with tweet class?");
-    assert.ok(data.indexOf("class='tweet'") > -1);
+    assertWell(assert.ok, data.indexOf("class='tweet'") > -1);
 }));
 
 var currentQuax = Object.keys(quax).length;
