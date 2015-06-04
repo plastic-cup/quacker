@@ -1,6 +1,7 @@
 var endpoints = {},
     fs = require('fs'),
-    quax;
+    quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8'));
+    console.log(typeof quax);
 
 endpoints['/main POST'] = function(req, res, callback){
     console.log(req.url);
@@ -16,6 +17,7 @@ endpoints['/main POST'] = function(req, res, callback){
     }
 
     quax[id] = {quack : quack, time : time, userID : userID};
+    fs.writeFile(__dirname + '/quax.json', JSON.stringify(quax));
     console.log(quax);
     return callback(null, 'YAY');
 };
