@@ -3,7 +3,6 @@ var endpoints = {},
 
 endpoints.POST = function(req, res, callback){
   //create (POST) a tweet
-
   return callback(null, 'YAY');
 };
 
@@ -18,9 +17,8 @@ endpoints.DELETE = function(req, res, callback){
 };
 
 endpoints.homepage = function(req, res, callback){
-    console.log(__dirname);
     fs.readFile(__dirname + '/index.html',function(err,data){
-        callback(err, data.toString());
+      callback(err,data.toString());
     });
 };
 

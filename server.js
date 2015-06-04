@@ -2,7 +2,6 @@ var http = require("http"),
     endpoints = require("./endpoints.js");
 
 http.createServer(function(req, res){
-
     var root = req.method,
         endpoint = endpoints[root];
 
@@ -14,6 +13,8 @@ http.createServer(function(req, res){
                 res.end(data);
             }
         });
+    } else if (req.url.indexOf('foo') > -1) {
+      endpoints.FOO(req, res, function(err, data){return;});
     } else {
         endpoint(req, res, function(err, data){
             if (err){
