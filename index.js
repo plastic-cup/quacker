@@ -24,14 +24,11 @@ function express(){
 
 	app.handle = function (request,response){
 		var index = 0;
-		function next (){
-			var func = middlewareStore[index];
-			index++;
-			if(!func){
-				return;
-			}
-			func(request,response,next);
-		}
+		function next(){
+            		if (middlewareStore.length >= 1){
+                		middlewareStore.shift()(request, response, next);
+            		}
+        	}
 		next();
 	};
 	return app;
