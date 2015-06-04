@@ -7,7 +7,16 @@ endpoints['/main POST'] = function(req, res, callback){
 
 endpoints['/main GET'] = function(req, res, callback){
     //return specified tweet
-    return callback(null, 'BOO');
+    var quax = require('./quax.js'),
+        quaxJSON = {"quax" : [
+
+        ]};
+
+    for (var key in quax){
+        quaxJSON.quax.push({"timestamp" : quax.key["timestamp"], "quack" : quax.key["quack"]});
+    }
+
+    return callback(null, quaxJSON);
 };
 
 endpoints['/main DELETE'] = function(req, res, callback){
