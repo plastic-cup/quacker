@@ -3,15 +3,19 @@ var endpoints = {},
     quax;
 
 endpoints['/main POST'] = function(req, res, callback){
+    console.log(req.url);
     var id = new Date().getTime() + Math.floor(Math.random() * 1000),
-        quack = req.url.split('?')[1].split('=')[1],
+        brokenUrl = req.url.split('='),
+        quack = brokenUrl[1].split('&')[0],
+        userID = brokenUrl[2],
         time = new Date();
 
+    quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.');
     if (!quax){
         quax = {};
     }
 
-    quax[id] = {quack : quack, time : time};
+    quax[id] = {quack : quack, time : time, userID : userID};
     console.log(quax);
     return callback(null, 'YAY');
 };
