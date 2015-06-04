@@ -21,15 +21,15 @@ endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(){
 }));
 
 var currentQuax = Object.keys(endpoints.quax).length;
-endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack'}, function(err, data){
+endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah&userId=idiot"}, function(err, data){
     console.log("# Has a new quack been created?");
-    assertWell(assert.equal, Object.keys(quax).length, currentQuax + 1);
+    assertWell(assert.equal, Object.keys(endpoints.quax).length, currentQuax + 1);
 }));
 
-var currentQuax = Object.keys(quax).length;
+var currentQuax = Object.keys(endpoints.quax).length;
 endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', futureProperty: {id: 3}}, function(err, data){
     console.log("# Has a quack been deleted?");
-    assertWell(assert.equal, Object.keys(quax).length, currentQuax - 1);
+    assertWell(assert.equal, Object.keys(endpoints.quax).length, currentQuax - 1);
 }));
 
 
@@ -45,6 +45,9 @@ errors.forEach(function(error){throw error;});
 
 function testReqAndRes(options, callback){
     var result = new stream.Readable();
+    for (var key in options){
+      result[key] = options[key];
+    }
     result.push(options.body);
     result.push(null);
     return [result, new http.ServerResponse(result), callback];

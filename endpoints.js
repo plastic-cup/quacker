@@ -51,4 +51,5 @@ endpoints.default = function(req, res, callback){
     }
 };
 
+endpoints.quax = quax;
 module.exports = endpoints;

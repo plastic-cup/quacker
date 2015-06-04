@@ -41,5 +41,5 @@ There are several cool things to checkout in the test file:
 
   + Quax will be stored in Redis.
     + [x] Stored in memory
-    + [ ] Stored in file system
+    + [x] Stored in file system
     + [ ] Stored in Redis
