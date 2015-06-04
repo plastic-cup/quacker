@@ -7,8 +7,8 @@ var endpoints = require('../endpoints.js'),
     testRes;
 
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, data){
-    console.log("# Does response contain an element with tweet class?");
-    assert.ok(data.indexOf("class='tweet'") > -1);
+    console.log("# Does response contain an element with quack class?");
+    assert.ok(data.indexOf("class='quack'") > -1);
 }));
 
 var currentQuax = Object.keys(quax).length;
