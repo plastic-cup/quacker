@@ -7,6 +7,7 @@ endpoints['/main POST'] = function(req, res, callback){
         quack = req.url.split('?')[1].split('=')[1],
         time = new Date();
 
+    quack = quack.replace(/%20/g, ' ', 'g');
     if (!quax){
         quax = {};
     }

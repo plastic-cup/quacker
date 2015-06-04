@@ -11,10 +11,10 @@ endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(err, d
     assert.ok(data.indexOf("class='tweet'") > -1);
 }));
 
-var currentQuax = Object.keys(quax).length;
+var currentQuax = Object.keys(endpoints.quax).length;
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack'}, function(err, data){
     console.log("# Has a new quack been created?");
-    assert.equal(Object.keys(quax).length, currentQuax + 1);
+    assert.equal(Object.keys(endpoints.quax).length, currentQuax + 1);
 }));
 
 var currentQuax = Object.keys(quax).length;
