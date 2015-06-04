@@ -1,3 +1,5 @@
+document.getElementById('sendQuack').addEventListener('click', postQuack);
+
 function postQuack(){
     var quack = document.getElementById('quack');
     var request = new XMLHttpRequest();
@@ -7,8 +9,6 @@ function postQuack(){
     request.send();
     quack.value = '';
 }
-
-document.getElementById('sendQuack').addEventListener('click', postQuack);
 
 function giveCookie(){
     var IDIndex = document.cookie.indexOf('userID'),
