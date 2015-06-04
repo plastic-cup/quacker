@@ -25,8 +25,11 @@ endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', futurePro
 
 
 endpoints.homepage({}, {}, function(err, data){
-    console.log("# Do we get something from the homepage?");
-    assert.ok(data);
+  console.log("# Do we get something from the homepage?");
+  fs.readFile(__dirname + '../index.html', function(err, index){
+    if (err) return new Error('uhoh');
+    assert.equal(data, index.toString());
+  });
 });
 
 function testReqAndRes(options, callback){
