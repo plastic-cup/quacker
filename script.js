@@ -1,7 +1,7 @@
 var sendQuack = document.getElementById('sendQuack'),
-    quacks,
     IDIndex = document.cookie.indexOf('userID'),
-    quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15);
+    quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15),
+    quacks;
 
 sendQuack.addEventListener('click', postQuack);
 sendQuack.addEventListener('mouseover', quaack);
@@ -16,7 +16,16 @@ function postQuack(){
     }
     request.open('POST', '/main?quack=' + quackText + '&userID=' + quackCookie);
     request.send();
-    console.log('posting');
+    request.onreadystatechange = function(){
+        if (request.readyState === 4){
+            if (request.status === 200){
+                var result = JSON.parse(request.responseText);
+                var obj = {};
+                obj[result.id] = result;
+                showQuack(result.id, obj);
+            }
+        }
+    };
     quack.value = '';
 }
 
@@ -31,21 +40,20 @@ function giveCookie(){
 }
 
 function showQuacks(quacks){
-    console.log(quacks);
     for (var key in quacks){
-        var quackContainer = document.createElement("div");
-        quackContainer.className = 'quack';
-        quackContainer.id = quacks[key].userID;
-        quackContainer.innerHTML = '<p id="' + quacks[key].id + '">' + quacks[key].quack + '</p> <p id="quackTime">Posted on: ' + quacks[key].time + '</p>';
-        var quax = document.getElementById('quax');
-        quax.insertBefore(quackContainer, quax.firstChild);
+        showQuack(key, quacks);
     }
-    quacks = document.getElementsByClassName('quack');
-    quacks = [].slice.call(quacks);
-    quacks.map(function(a){
-        a.addEventListener('mouseenter', showDelete);
-        a.addEventListener('mouseleave', hideDelete);
-    });
+}
+
+function showQuack(key, quacks){
+    var quackContainer = document.createElement("div");
+    quackContainer.className = 'quack';
+    quackContainer.id = quacks[key].userID;
+    quackContainer.innerHTML = '<p id="' + quacks[key].id + '">' + quacks[key].quack + '</p> <p id="quackTime">Posted on: ' + quacks[key].time + '</p>';
+    quackContainer.addEventListener('mouseenter', showDelete);
+    quackContainer.addEventListener('mouseleave', hideDelete);
+    var quax = document.getElementById('quax');
+    quax.insertBefore(quackContainer, quax.firstChild);
 }
 
 function getQuacks(){
@@ -83,15 +91,12 @@ function unquaack(){
     var word = document.getElementById('sendQuack').innerText,
         a = word.slice(2, -2);
 
-    console.log(word);
-
     var interval = setInterval(function(){
         if (a.length === 1){
             clearInterval(interval);
         }
         else{
             a = a.slice(0, -1);
-            console.log(a);
             document.getElementById('sendQuack').innerHTML = "Qu" + a + "ck";
         }
     }, 100);
@@ -112,7 +117,6 @@ function hideDelete(){
 
 function deleteQuack(){
     var IDIndex = document.cookie.indexOf('userID');
-    console.log(quackCookie, this.parentNode.id);
     if (IDIndex === -1 || quackCookie !== this.parentNode.id){
         alert('You can\'t delete a quack you didn\'t quack');
         return;

@@ -19,6 +19,8 @@ endpoints['/main POST'] = function(req, res, next){
     }
 
     quax[id] = {quack : quack, time : time, userID : userID, id : id};
+    console.log('doooo');
+    res.end(JSON.stringify(quax[id]));
     next();
 };
 
