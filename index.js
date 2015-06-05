@@ -1,44 +1,51 @@
 // express stuff
 var url = require('url'),
-    http = require('http'),
-    endpoints = require("./endpoints.js"),
-    routing = require("./routing.js");
+  http = require('http'),
+  endpoints = require("./endpoints.js"),
+  routing = require("./routing.js");
 
 
 function express(){
-	var middlewareStore = [];
+	  var middlewareStore = [];
 
-	function app(request, response){
-        app.routing(request, response); //populates middlewareStore;
-		app.handle(request, response);
-	}
+	  function app(request, response){
+	    	app.handle(request, response, routing(request));
+  	}
 
-    app.routing = function(request, response){
-        middlewareStore = routing(request, response);
+    app.route = function(path, fn){
+      app[path] = app[path] || {};
+      app[path].store = app[path].store || [];
+      app[path].store.push(fn);
     };
 
-
     app.use = function (fn){
-		middlewareStore.push(fn);
-	};
+	     app.route('/ GET', fn);
+    };
 
-	app.handle = function (request,response){
-		var index = 0;
-		function next(){
-            		if (middlewareStore.length >= 1){
-                		middlewareStore.shift()(request, response, next);
-            		}
-        	}
-		next();
-	};
-	return app;
+  	app.handle = function (request, response, path){
+	  	  var index = 0;
+        var that = app[path] && app[path].store ? app[path] : app.generic;
+        console.log(path);
+
+	  	  function runner(err) {
+            var lay = this.store[index];
+            if (!lay) return;
+            index++;
+            if (err && lay.length < 4) {
+              next(err);
+            } else if (err){
+              lay(err, request, response, next);
+            } else if (lay.length > 3) {
+              next();
+            } else {
+              lay(request, response, next);
+            }
+        }
+
+        next = runner.bind(that);
+        next();
+	  };
+	  return app;
 }
 
 module.exports = express;
-
-// function next(){
-//     if (middlewareStore.length >= 1){
-//         middlewareStore.shift()(request, res, next);
-//     }
-//     next();
-// }
