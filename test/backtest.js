@@ -86,6 +86,10 @@ quacksert.async(function(){
   }));
 });
 
+endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20blah%20&userId=idiot"}, function(req, res){
+  return function(){assert(true);};
+}));
+
 quacksert.run();
 
 setTimeout(function(){
