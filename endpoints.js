@@ -25,6 +25,7 @@ endpoints['/main POST'] = function(req, res, next){
 endpoints['/main GET'] = function(req, res, next){
     //return ALL tweets
     res._quaxJSON = JSON.stringify(quax);
+    res.end(JSON.stringify(quax));
     next();
 };
 

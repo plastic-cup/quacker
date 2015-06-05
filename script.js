@@ -21,3 +21,21 @@ function giveCookie(){
     }
     return quackCookie;
 }
+
+window.onload = function(){
+    (function getQuacks(){
+        var request = new XMLHttpRequest();
+        request.open('GET', '/main');
+        request.send();
+        console.log('sent');
+        request.onreadystatechange = function(){
+            if (request.readyState === 4){
+                console.log('####' + 4);
+                if (request.status === 200){
+                    console.log('####' + 200);
+                    console.log(request.responseText);
+                }
+            }
+        };
+    })();
+};
