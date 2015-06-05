@@ -47,7 +47,6 @@ test.async = function(assertionMethod){
             assertsOnHold[numOnHold - 1](next);
         };
         waitingAsync();
-        next();
     });
 
 };
