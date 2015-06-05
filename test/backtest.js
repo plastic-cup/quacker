@@ -73,13 +73,14 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: 'hiiii'}, funct
       console.log('do we get an error with a bad path?');
       assert(error);
     };
+
 }));
 
 endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, function(req,res){
     var css = fs.readFileSync(__dirname + '/../style.css');
     return function(){
       console.log('can we get the css file?');
-      assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('#quack')).slice(0,10));
+      assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('*')).slice(0,10));
     };
 }));
 
