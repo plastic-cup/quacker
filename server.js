@@ -7,8 +7,8 @@ var http = require("http"),
 
 http.createServer(app).listen(8000);
 
-app.use(endpoints.homepage);
-app.use(endpoints['/main GET']);
+app.route('/ GET', endpoints.homepage);
+app.route('/ GET', endpoints['/main GET']);
 app.use(errorHandler);
 
 app.route('/main POST', endpoints['/main POST']);
