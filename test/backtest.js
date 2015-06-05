@@ -8,16 +8,6 @@ var endpoints = require('../endpoints.js'),
     testReq,
     testRes;
 
-function assertWell(assertionMethod){
-  try {
-      assertionMethod.apply(null, [].slice.call(arguments).slice(1));
-  }
-  catch (e) {
-      errors.push(e);
-      console.error(e);
-  }
-}
-
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah&userId=idiot"}, function(req, res){
     var currentQuax = Object.keys(endpoints.quax).length;
     return function(){
@@ -25,8 +15,6 @@ endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my qua
         quacksert(assert.equal, Object.keys(endpoints.quax).length, currentQuax + 1);
     };
 }));
-
-quacksert.run();
 
 endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE'}, function(req,res){
     var currentQuax = Object.keys(endpoints.quax).length;
@@ -47,16 +35,16 @@ endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res)
     };
 }));
 
-endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-    quacksert.async(function(){
-      fs.rename(__dirname + '/../index.html',__dirname +'/../indes.html');
-      return function(error){
-          console.log('# do we get an error if index is gone?');
-          assert(error);
-          fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
-      };
-    });
-}));
+quacksert.async(function(){
+    fs.rename(__dirname + '/../index.html', __dirname +'/../indes.html');
+    endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+        return function(error){
+            console.log('# do we get an error if index is gone?');
+            assertWell(assert.ok, error);
+            fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
+        };
+    }));
+});
 
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, res){
     return function(){
@@ -77,17 +65,18 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: 'hiiii'}, funct
       console.log('do we get an error with a bad path?');
       assert(error);
     };
+
 }));
 
 endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, function(req,res){
     var css = fs.readFileSync(__dirname + '/../style.css');
     return function(){
       console.log('can we get the css file?');
-      assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('#quack')).slice(0,10));
+      assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('*')).slice(0,10));
     };
 }));
 
-setTimeout(function(){
+quacksert.async(function(){
   endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah&userId=idiot"}, function(req, res){
       endpoints.reset();
       return function(){
@@ -95,12 +84,23 @@ setTimeout(function(){
           assertWell(assert.ok, endpoints.quax);
       };
   }));
-},300);
+});
+
+quacksert.run();
 
 setTimeout(function(){
     errors.forEach(function(error){throw error;});
 }, 600);
 
+function assertWell(assertionMethod){
+  try {
+      assertionMethod.apply(null, [].slice.call(arguments).slice(1));
+  }
+  catch (e) {
+      errors.push(e);
+      console.error(e);
+  }
+}
 
 function testReqAndRes(options, nextMaker){
     var request = new stream.Readable();

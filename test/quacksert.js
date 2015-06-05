@@ -2,9 +2,16 @@ var assert = require('assert');
 
 var testsRunning = 0;
 var tests = [];
+var errors = [];
+var assertOnHold;
 var assertsOnHold = [];
 var waitingAsync = function(){
-    if (assertOnHold && testsRunning === 0) assertOnHold();
+    var currAssert;
+    if (assertOnHold && testsRunning === 0){
+        currAssert = assertOnHold;
+        assertOnHold = undefined;
+        currAssert();
+    }
 };
 
 var quack = function(assertionMethod){
@@ -14,12 +21,11 @@ var quack = function(assertionMethod){
         testsRunning--;
         waitingAsync();
       }
-      catch (e) {
+    catch (e) {
         errors.push(e);
-        console.error(e);
         testsRunning--;
         waitingAsync();
-      }
+    }
 };
 
 var test = function(assertionMethod){
@@ -30,19 +36,25 @@ var test = function(assertionMethod){
 };
 
 test.async = function(assertionMethod){
+
     var numOnHold = assertsOnHold.push(function(next){
-        quack();
+        quack(assertionMethod);
         next();
     });
-    tests.push(function(){
-        assertOnHold = assertsOnHold[numOnHold - 1]();
+
+    tests.push(function(next){
+        assertOnHold = function(){
+            assertsOnHold[numOnHold - 1](next);
+        };
         waitingAsync();
+        next();
     });
+
 };
 
 test.run = function(){
     var index = 0;
-    function next(index){
+    function next(){
         var check = tests[index];
         if (!check) return;
         index++;

@@ -1,23 +1,54 @@
-#quack {
-    display: block;
-    width: 90%;
-    height: 10vh;
+* {
+    font-family: 'Raleway', sans-serif;
+}
 
+body {
+    background-image: url("duckz.jpg");
+}
+
+#bar {
+    background-color: #057f63;
+    margin: 0;
+}
+
+#enterQuack {
+    border-color: A7FAF0;
+    border-width: 2px;
+    display: block;
+    font-size: 32px;
+    height: 10vh;
     margin-left: auto;
     margin-right: auto;
+    padding: 10px;
+    resize: none;
+    transition: .5s border-width;
+    width: 90%;
+}
 
-    font-size: 24px;
+#enterQuack:focus {
+    border-color: #58DBCC;
+    border-width: 5px;
+    outline: none;
+    transition: 0.5s border-width;
 }
 
 #quackPoster {
-
     width: 100%;
-    
 }
 
 #sendQuack {
-
+    border-style: none;
+    font-size: 1.3em;
+    height: 5%;
+    margin-top: 1%;;
     position: absolute;
     right: 5%;
+    transition: width 0.5s, background-color 0.5s;
+    transition-timing-function: ease-out;
+    width: 8%;
+}
 
+#sendQuack:hover {
+    background-color: #A7EFFA;
+    width: 20%;
 }
