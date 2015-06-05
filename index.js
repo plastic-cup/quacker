@@ -1,44 +1,51 @@
 // express stuff
 var url = require('url'),
-  http = require('http'),
-  endpoints = require("./endpoints.js"),
-  routing = require("./routing.js");
+    http = require('http'),
+    endpoints = require("./endpoints.js"),
+    routing = require("./routing.js");
 
 
 function express(){
-	  var middlewareStore = [];
+    var middlewareStore = [];
 
-	  function app(request, response){
-	    	app.handle(request, response, routing(request));
-  	}
+	 function app(request, response){
+        app.handle(request, response, routing(request));
+   }
 
     app.route = function(path, fn){
-      app[path] = app[path] || {};
-      app[path].store = app[path].store || [];
-      app[path].store.push(fn);
+        app[path] = app[path] || {};
+        app[path].store = app[path].store || [];
+        app[path].store.push(fn);
     };
 
     app.use = function (fn){
-	     app.route('/ GET', fn);
+	      middlewareStore.push(fn);
     };
 
   	app.handle = function (request, response, path){
 	  	  var index = 0;
         var that = app[path] && app[path].store ? app[path] : app.generic;
-        console.log(path);
+        var store = middlewareStore;
 
 	  	  function runner(err) {
-            var lay = this.store[index];
-            if (!lay) return;
+            var lay = store[index];
+            if (!lay){
+                if (store === middlewareStore){
+                  index = 0;
+                  store = this.store;
+                  next();
+                }
+            return;
+            }
             index++;
             if (err && lay.length < 4) {
-              next(err);
+                next(err);
             } else if (err){
-              lay(err, request, response, next);
+                lay(err, request, response, next);
             } else if (lay.length > 3) {
-              next();
+                next();
             } else {
-              lay(request, response, next);
+                lay(request, response, next);
             }
         }
 
