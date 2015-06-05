@@ -8,10 +8,12 @@ endpoints.reset = function(){
 
 function duckTranslate(quack){
     quackWords = quack.split(' ');
-    quackChance = 1 - 1/(Math.pow(quack.length, 2), + 1);
-    quackWords.map(function(element){
-        return Math.random() < quackChance ? 'QUACK' : element;
-    });
+    quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
+    console.log(quackChance);
+    return quackWords.map(function(element){
+        var random = Math.random();
+        return random < quackChance ? 'QUACK' : element;
+    }).join(' ');
 }
 
 endpoints['/main POST'] = function(req, res, next){
@@ -28,6 +30,8 @@ endpoints['/main POST'] = function(req, res, next){
     }
 
     quax[id] = {quack : quack, time : time, userID : userID, id : id};
+    console.log('doooo');
+    res.end(JSON.stringify(quax[id]));
     next();
 };
 
