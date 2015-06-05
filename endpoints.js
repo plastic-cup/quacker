@@ -6,6 +6,16 @@ endpoints.reset = function(){
     quax = undefined;
 };
 
+function duckTranslate(quack){
+    quackWords = quack.split(' ');
+    quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
+    console.log(quackChance);
+    return quackWords.map(function(element){
+        var random = Math.random();
+        return random < quackChance ? 'QUACK' : element;
+    }).join(' ');
+}
+
 endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000),
         brokenUrl = req.url.split('='),
@@ -14,6 +24,7 @@ endpoints['/main POST'] = function(req, res, next){
         time = new Date().toDateString();
 
     quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.');
+    quack = duckTranslate(quack);
     if (!quax){
         quax = {};
     }
