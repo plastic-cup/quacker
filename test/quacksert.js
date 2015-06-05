@@ -14,10 +14,10 @@ var waitingAsync = function(){
     }
 };
 
-var quack = function(assertionMethod){
+var quack = function(assertionMethod, argumentArray){
     try {
         testsRunning++;
-        assertionMethod.apply(null, [].slice.call(arguments).slice(1));
+        assertionMethod.apply(null, argumentArray);
         testsRunning--;
         waitingAsync();
       }
@@ -29,9 +29,10 @@ var quack = function(assertionMethod){
 };
 
 var test = function(assertionMethod){
+    var methodArgs = [].slice.call(arguments).slice(1);
     tests.push(function(next){
         next();
-        quack(assertionMethod);
+        quack(assertionMethod,methodArgs);
     });
 };
 
@@ -60,6 +61,7 @@ test.run = function(){
         check(next);
     }
     next();
+    errors.forEach(function(error){throw error;});
 };
 
 module.exports = test;
