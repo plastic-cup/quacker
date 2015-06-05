@@ -52,7 +52,7 @@ endpoints.homepage = function(req, res, next){
 };
 
 endpoints.default = function(req, res, next){
-    if (req.url.indexOf('.') === -1) return next(new Error('oops'));
+    if (req.url.indexOf('.') === -1) return next(new Error('oops' + req.url));
     fs.readFile(__dirname + req.url, function(err, data){
         if (err) next(err);
         else {
