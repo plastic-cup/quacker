@@ -4,7 +4,6 @@
 
 body {
     background-image: url("duckz.jpg");
-
 }
 
 #bar {
@@ -20,26 +19,17 @@ body {
     height: 10vh;
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
-
     padding: 10px;
     resize: none;
-    transition: .5s border-width, border-color;
-
-
+    transition: .5s border-width;
+    width: 90%;
 }
 
-/*#enterQuack:hover {
-    border-color: #58DBCC;
-}*/
-
 #enterQuack:focus {
-
     border-color: #58DBCC;
     border-width: 5px;
     outline: none;
     transition: 0.5s border-width;
-
 }
 
 #quackPoster {
@@ -47,7 +37,6 @@ body {
 }
 
 #sendQuack {
-
     border-style: none;
     font-size: 1.3em;
     height: 5%;

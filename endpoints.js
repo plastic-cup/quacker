@@ -1,10 +1,12 @@
 var endpoints = {},
     fs = require('fs'),
     quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8'));
-    console.log(typeof quax);
 
-endpoints['/main POST'] = function(req, res, callback){
-    console.log(req.url);
+endpoints.reset = function(){
+    quax = undefined;
+};
+
+endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000),
         brokenUrl = req.url.split('='),
         quack = brokenUrl[1].split('&')[0],
@@ -17,38 +19,48 @@ endpoints['/main POST'] = function(req, res, callback){
     }
 
     quax[id] = {quack : quack, time : time, userID : userID};
-    fs.writeFile(__dirname + '/quax.json', JSON.stringify(quax));
-    console.log(quax);
-    return callback(null, 'YAY');
+    next();
 };
 
 endpoints['/main GET'] = function(req, res, next){
     //return ALL tweets
     res._quaxJSON = JSON.stringify(quax);
-    //return callback(null, quaxJSON);
+    next();
 };
 
-endpoints['/main DELETE'] = function(req, res, callback){
-    //delete tweet
-    return callback(null, 'YAY');
-};
-
-endpoints.homepage = function(req, res, callback){
-    fs.readFile(__dirname + '/index.html',function(err,data){
-      callback(err, data.toString());
+endpoints['/main DELETE'] = function(req, res, next){
+    var body = '';
+    req.on('data', function(data){
+        body += data;
+    });
+    req.on('end', function(){
+        id = JSON.parse(body).id;
+        delete quax[id];
+        next();
     });
 };
 
-endpoints.default = function(req, res, callback){
-    if (req.url.indexOf('.') > -1){
-        fs.readFile(__dirname + req.url, function(err, data){
-            if (err){
-                return callback(err);
-            } else {
-                return callback(null, data.toString());
-            }
-        });
-    }
+endpoints.homepage = function(req, res, next){
+    fs.readFile(__dirname + '/index.html',function(err,data){
+      if (err) next(err);
+      else {
+          res.end(data);
+          next();
+      }
+    });
 };
 
+endpoints.default = function(req, res, next){
+    if (req.url.indexOf('.') === -1) return next(new Error('oops' + req.url));
+    fs.readFile(__dirname + req.url, function(err, data){
+        if (err) next(err);
+        else {
+            res.writeHead(200, {'Content-Type' : 'text/' + req.url.split('.')[1]});
+            res.end(data.toString());
+            next();
+        }
+    });
+};
+
+endpoints.quax = quax;
 module.exports = endpoints;
