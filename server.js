@@ -1,7 +1,9 @@
 var http = require("http"),
+    fs = require('fs'),
     express = require("./index.js");
     endpoints = require("./endpoints");
     app = express();
+
 
 http.createServer(app).listen(8000);
 
@@ -26,5 +28,5 @@ function errorHandler(err, request, response, next){
 }
 
 setInterval(function(){
-    fs.writeFile(__dirname + '/quax.json', JSON.stringify(quax));
+    fs.writeFile(__dirname + '/quax.json', JSON.stringify(endpoints.quax));
 },1000);
