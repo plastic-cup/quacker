@@ -1,4 +1,5 @@
 var assert = require('assert');
+var quacksert = require('./quacksert');
 var http = require('http');
 var fs = require('fs');
 var stream = require('stream');
@@ -21,10 +22,11 @@ endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my qua
     var currentQuax = Object.keys(endpoints.quax).length;
     return function(){
         console.log("# Has a new quack been created?");
-        assertWell(assert.equal, Object.keys(endpoints.quax).length, currentQuax + 1);
+        quacksert(assert.equal, Object.keys(endpoints.quax).length, currentQuax + 1);
     };
 }));
 
+quacksert.run();
 
 endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE'}, function(req,res){
     var currentQuax = Object.keys(endpoints.quax).length;
@@ -33,7 +35,7 @@ endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE'}, function
     req.push(null);
     return function(){
         console.log("# Has a quack been deleted?");
-        assertWell(assert.equal, Object.keys(endpoints.quax).length, currentQuax - 1);
+        quacksert.async(assert.equal, Object.keys(endpoints.quax).length, currentQuax - 1);
     };
 }));
 
@@ -46,12 +48,14 @@ endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res)
 }));
 
 endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-    fs.rename(__dirname + '/../index.html',__dirname +'/../indes.html');
-    return function(error){
-        console.log('# do we get an error if index is gone?');
-        assert(error);
-        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
-    };
+    quacksert.async(function(){
+      fs.rename(__dirname + '/../index.html',__dirname +'/../indes.html');
+      return function(error){
+          console.log('# do we get an error if index is gone?');
+          assert(error);
+          fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
+      };
+    });
 }));
 
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, res){
