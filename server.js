@@ -9,7 +9,9 @@ http.createServer(app).listen(8000);
 
 app.route('/ GET', endpoints.homepage);
 app.route('/ GET', endpoints['/main GET']);
-app.use(errorHandler);
+
+app.route('/main GET', endpoints['/main GET']);
+app.route('/main GET', errorHandler);
 
 app.route('/main POST', endpoints['/main POST']);
 app.route('/main POST', errorHandler);
