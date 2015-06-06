@@ -2,10 +2,10 @@ var http = require("http"),
     fs = require('fs'),
     express = require("./index.js");
     endpoints = require("./endpoints");
+    port = process.env.PORT || 8000;
     app = express();
 
-
-http.createServer(app).listen(8000);
+http.createServer(app).listen(port);
 
 app.route('/ GET', endpoints.homepage);
 app.route('/ GET', endpoints['/main GET']);
