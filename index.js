@@ -23,7 +23,7 @@ function express(){
     };
 
   	app.handle = function (request, response, path){
-	  	  var index = 0;
+	  	var index = 0;
         var that = app[path] && app[path].store ? app[path] : app.generic;
         var store = middlewareStore;
 

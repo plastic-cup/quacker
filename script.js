@@ -11,7 +11,7 @@ function postQuack(){
     var quack = document.getElementById('enterQuack');
     var request = new XMLHttpRequest();
     var quackText = quack.value.replace(/\./g, '%2E');
-    if (!quackCookie){
+    if (quackCookie.length !== 8){
         giveCookie();
     }
     request.open('POST', '/main?quack=' + quackText + '&userID=' + quackCookie);
@@ -31,12 +31,11 @@ function postQuack(){
 
 function giveCookie(){
     if (IDIndex === -1){
-        quackCookie = 'userID=' + Math.floor((Math.random() * (1 - 0.1) + 0.1) * 100000000);
-        document.cookie = quackCookie;
-    } else {
-        quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15);
+        var qCookie = 'userID=' + Math.floor((Math.random() * (1 - 0.1) + 0.1) * 100000000);
+        document.cookie = qCookie;
+        IDIndex = document.cookie.indexOf('userID');
     }
-    return quackCookie;
+    quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15);
 }
 
 function showQuacks(quacks){
@@ -72,19 +71,17 @@ function getQuacks(){
 window.onload = getQuacks();
 
 function quaack(){
-
     var a = "a";
+
     var interval = setInterval(function(){
         if (a.length >= 5){
             clearInterval(interval);
         }
         else{
             a += "a";
-
             document.getElementById('sendQuack').innerText = "Qua" + a + "ck";
         }
     }, 100);
-
 }
 
 function unquaack(){
@@ -116,7 +113,6 @@ function hideDelete(){
 }
 
 function deleteQuack(){
-    var IDIndex = document.cookie.indexOf('userID');
     if (IDIndex === -1 || quackCookie !== this.parentNode.id){
         alert('You can\'t delete a quack you didn\'t quack');
         return;
