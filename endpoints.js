@@ -9,7 +9,6 @@ endpoints.reset = function(){
 function duckTranslate(quack){
     quackWords = quack.split(' ');
     quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
-    console.log(quackChance);
     return quackWords.map(function(element){
         var random = Math.random();
         return random < quackChance ? 'QUACK' : element;
@@ -23,6 +22,8 @@ endpoints['/main POST'] = function(req, res, next){
         userID = brokenUrl[2],
         time = new Date().toDateString();
 
+        console.log(userID);
+
     quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.');
     quack = duckTranslate(quack);
     if (!quax){
@@ -30,7 +31,7 @@ endpoints['/main POST'] = function(req, res, next){
     }
 
     quax[id] = {quack : quack, time : time, userID : userID, id : id};
-    console.log('doooo');
+
     res.end(JSON.stringify(quax[id]));
     next();
 };
@@ -43,13 +44,13 @@ endpoints['/main GET'] = function(req, res, next){
 };
 
 endpoints['/main DELETE'] = function(req, res, next){
-    console.log('hi');
+
     var body = '';
     req.on('data', function(data){
         body += data;
     });
     req.on('end', function(){
-        console.log(body);
+
         id = JSON.parse(body).id;
         delete quax[id];
         next();
