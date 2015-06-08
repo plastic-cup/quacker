@@ -20,9 +20,7 @@ function postQuack(){
         if (request.readyState === 4){
             if (request.status === 200){
                 var result = JSON.parse(request.responseText);
-                var obj = {};
-                obj[result.id] = result;
-                showQuack(result.id, obj);
+                showQuack(result[0]);
             }
         }
     };
@@ -38,17 +36,18 @@ function giveCookie(){
     quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15);
 }
 
-function showQuacks(quacks){
-    for (var key in quacks){
-        showQuack(key, quacks);
-    }
+function getQuackFromArray(quacksArray){
+    quacksArray.forEach(function(quackObj){
+        showQuack(quackObj);
+    });
 }
 
-function showQuack(key, quacks){
+function showQuack(quack){
+    console.log(quack);
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
-    quackContainer.id = quacks[key].userID;
-    quackContainer.innerHTML = '<p id="' + quacks[key].id + '">' + quacks[key].quack + '</p> <p id="quackTime">Posted on: ' + quacks[key].time + '</p>';
+    quackContainer.id = quack.userID;
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + '</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');
@@ -62,7 +61,7 @@ function getQuacks(){
     request.onreadystatechange = function(){
         if (request.readyState === 4){
             if (request.status === 200){
-                showQuacks(JSON.parse(request.responseText));
+                getQuackFromArray(JSON.parse(request.responseText)); // data from redis goes here
             }
         }
     };
@@ -72,7 +71,6 @@ window.onload = getQuacks();
 
 function quaack(){
     var a = "a";
-
     var interval = setInterval(function(){
         if (a.length >= 5){
             clearInterval(interval);
@@ -119,6 +117,8 @@ function deleteQuack(){
     }
     var request = new XMLHttpRequest();
     request.open('DELETE', '/main');
-    request.send(JSON.stringify({id : this.parentNode.firstChild.id}));
+    console.log(JSON.stringify(this.parentNode.firstChild.id));
+    request.send(JSON.stringify(this.parentNode.firstChild.id));
+
     this.parentNode.remove();
 }

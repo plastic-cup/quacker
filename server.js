@@ -30,5 +30,5 @@ function errorHandler(err, request, response, next){
 }
 
 setInterval(function(){
-    fs.writeFile(__dirname + '/quax.json', JSON.stringify(endpoints.quax));
+    fs.writeFile(__dirname + '/quackIDs.json', JSON.stringify(endpoints.quackIDs));
 },1000);
