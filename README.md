@@ -21,7 +21,9 @@ We want to make an app that's good for publishing short thoughts and seeing othe
 
   + [ ] LIVE on HEROKU! Quack.
 
-  + [ ] Real-time quack updates
+  + [x] Real-time quack updates
+
+  + [ ] Location data
 
 
 ## How
@@ -42,4 +44,4 @@ There are several cool things to checkout in the test file:
   + Quax will be stored in Redis.
     + [x] Stored in memory
     + [x] Stored in file system
-    + [ ] Stored in Redis
+    + [x] Stored in Redis
