@@ -21,9 +21,15 @@ function duckTranslate(quack){
 
 endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000);
-    var brokenUrl = req.url.split(/\/main\?quack=/)[1];
-    var quack = brokenUrl.split(/&userID=\d+/)[0],
-        userID = brokenUrl.split(/\S+userID=/)[1],
+
+    var noMain = req.url.split(/\/main\?quack=/)[1];
+    var quack = noMain.split(/&userID=\S+/)[0],
+        forUserID = noMain.split(/\S+userID=/)[1],
+        userID = forUserID.split(/&lat=\S+/)[0];
+
+    var interim = forUserID.split("&lon=");
+    var lat = interim[0].split("&lat=")[1];
+    var lon = interim[1];
         time = new Date().toDateString();
 
     // HACKY HACKY HACKY way of dealing with url encoding anomalies
@@ -36,20 +42,16 @@ endpoints['/main POST'] = function(req, res, next){
     }
     quackIDs.push(id); // store id in local file
 
-    client.on("error", function (err) {
-        console.log("Error " + err);
-    });
 
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, function handler(err, reply){
-        res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
+
+    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, function handler(err, reply){
+        res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat : lat, lon : lon}]));
         next();
     });
 };
 
 endpoints['/main GET'] = function(req, res, next){
-    client.on("error", function (err) {
-        console.log("Error " + err);
-    });
+
     quackIDs.forEach(function(e){
         client.hgetall(e, function(err, quack){
             if (!err){
@@ -72,9 +74,7 @@ endpoints['/main DELETE'] = function(req, res, next){
     req.on('end', function(){
 
         id = JSON.parse(body);
-        client.on("error", function (err) {
-            console.log("Error " + err);
-        });
+
         client.del(id, function(err, reply){
             if (!err){
                 console.log(reply + " quack removed from Db");
