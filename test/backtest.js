@@ -8,6 +8,9 @@ var endpoints = require('../endpoints.js'),
     testReq,
     testRes;
 
+endpoints.base = function(){console.log('me');};
+endpoints.base();
+
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah&userId=idiot"}, function(req, res){
     var currentQuax = Object.keys(endpoints.quax).length;
     return function(){

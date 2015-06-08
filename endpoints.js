@@ -1,7 +1,7 @@
 var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
-    client = redis.createClient(),
+    base = require('./base'),
     quackIDs,
     quaxFromDb = [];
 
@@ -11,7 +11,7 @@ endpoints.reset = function(){
 
 function duckTranslate(quack){
     quackWords = quack.split(' ');
-    quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
+    quackChance = 1 - 1/(Math.pow(quackWords.length/10,0.15) + 0.01);
     return quackWords.map(function(element){
         var random = Math.random();
         return random < quackChance ? 'QUACK' : element;
@@ -34,30 +34,19 @@ endpoints['/main POST'] = function(req, res, next){
         quackIDs = [];
     }
 
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, function handler(err, reply){
-        console.log(reply);
-        res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
-        next();
+    base.addQuack(id, quack, time, userID, function handler(err, reply){
+      res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
+      next();
     });
 };
 
 endpoints['/main GET'] = function(req, res, next){
-
-    client.keys('*', function(err, keys){
-        keys.forEach(function(e){
-            client.hgetall(e, function(err, quack){
-                if (!err){
-                    quaxFromDb.push(quack);
-                }
-            });
-        });
+    base.getQuax(quaxFromDb, function(){
+        res._quaxJSON = JSON.stringify(quaxFromDb);
+        res.end(JSON.stringify(quaxFromDb));
+        quaxFromDb = [];
+        next();
     });
-
-    res._quaxJSON = JSON.stringify(quaxFromDb);
-    res.end(JSON.stringify(quaxFromDb));
-
-    quaxFromDb = []; // HACKY HACKY HACKY, problems with repeating quacks
-    next();
 };
 
 endpoints['/main DELETE'] = function(req, res, next){
@@ -66,16 +55,8 @@ endpoints['/main DELETE'] = function(req, res, next){
         body += data;
     });
     req.on('end', function(){
-
         id = JSON.parse(body);
-        client.on("error", function (err) {
-            console.log("Error " + err);
-        });
-        client.del(id, function(err, reply){
-            if (!err){
-                console.log(reply + " quack removed from Db");
-            }
-        });
+        base.quackle(id);
         next();
     });
 };
@@ -102,5 +83,4 @@ endpoints.default = function(req, res, next){
     });
 };
 
-// endpoints.quackIDs = quackIDs;
 module.exports = endpoints;
