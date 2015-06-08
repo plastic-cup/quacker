@@ -2,7 +2,7 @@ var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
     client = redis.createClient(),
-    quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8')),
+    //quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8')),
     quackIDs = JSON.parse(fs.readFileSync(__dirname + '/quackIDs.json','utf8')),
     quaxFromDb = [];
 
