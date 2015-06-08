@@ -2,8 +2,7 @@ var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
     client = redis.createClient(),
-    //quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8')),
-    quackIDs = JSON.parse(fs.readFileSync(__dirname + '/quackIDs.json','utf8')),
+    quackIDs,
     quaxFromDb = [];
 
 endpoints.reset = function(){
@@ -34,29 +33,26 @@ endpoints['/main POST'] = function(req, res, next){
     if (!quackIDs){
         quackIDs = [];
     }
-    quackIDs.push(id); // store id in local file
-
-    client.on("error", function (err) {
-        console.log("Error " + err);
-    });
 
     client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, function handler(err, reply){
+        console.log(reply);
         res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
         next();
     });
 };
 
 endpoints['/main GET'] = function(req, res, next){
-    client.on("error", function (err) {
-        console.log("Error " + err);
-    });
-    quackIDs.forEach(function(e){
-        client.hgetall(e, function(err, quack){
-            if (!err){
-                quaxFromDb.push(quack);
-            }
+
+    client.keys('*', function(err, keys){
+        keys.forEach(function(e){
+            client.hgetall(e, function(err, quack){
+                if (!err){
+                    quaxFromDb.push(quack);
+                }
+            });
         });
     });
+
     res._quaxJSON = JSON.stringify(quaxFromDb);
     res.end(JSON.stringify(quaxFromDb));
 
@@ -106,5 +102,5 @@ endpoints.default = function(req, res, next){
     });
 };
 
-endpoints.quackIDs = quackIDs;
+// endpoints.quackIDs = quackIDs;
 module.exports = endpoints;
