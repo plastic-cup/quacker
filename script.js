@@ -1,11 +1,16 @@
 var sendQuack = document.getElementById('sendQuack'),
     IDIndex = document.cookie.indexOf('userID'),
     quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15),
-    quacks;
+    quacks,
+    socket = io();
 
 sendQuack.addEventListener('click', postQuack);
 sendQuack.addEventListener('mouseover', quaack);
 sendQuack.addEventListener('mouseout', unquaack);
+
+socket.on('quack', function(data){
+    showQuack(data[0]);
+});
 
 function postQuack(){
     var quack = document.getElementById('enterQuack');
@@ -20,7 +25,7 @@ function postQuack(){
         if (request.readyState === 4){
             if (request.status === 200){
                 var result = JSON.parse(request.responseText);
-                showQuack(result[0]);
+                socket.emit('quack', result);
             }
         }
     };
