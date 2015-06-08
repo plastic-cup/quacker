@@ -14,9 +14,9 @@ We want to make an app that's good for publishing short thoughts and seeing othe
 
   + [x] An app with Create, Read and Delete endpoints
 
-  + [ ] Quax will be persistently available
+  + [x] Quax will be persistently available
 
-  + [ ] Some authentication process
+  + [x] Some authentication process
     + [x] Cookies
 
   + [ ] LIVE on HEROKU! Quack.
@@ -34,7 +34,7 @@ There are several cool things to checkout in the test file:
   + A function we wrote to keep the tests running after the first failed assertion
   + A function we wrote to spoof HTTP request and responses
   + A lot of uses of the `call` and `apply` function methods
-  + [ ] Coming soon! Redefining methods of requests so that when the tests run the endpoint functions, the endpoints run tests! Banging.
+  + Passing the tests as the `next` function to the endpoint, so it calls the tests when it's finished.
 
 ### How it's made
   + [x] CR-D accessed using HTTP `POST`, `GET` and `DELETE` respectively.
