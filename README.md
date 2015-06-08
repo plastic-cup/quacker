@@ -23,6 +23,8 @@ We want to make an app that's good for publishing short thoughts and seeing othe
 
   + [x] Real-time quack updates
 
+  + [ ] Location data
+
 
 ## How
 
