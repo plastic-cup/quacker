@@ -25,11 +25,10 @@ endpoints['/main POST'] = function(req, res, next){
     var noMain = req.url.split(/\/main\?quack=/)[1];
     var quack = noMain.split(/&userID=\S+/)[0],
         forUserID = noMain.split(/\S+userID=/)[1],
-        userID = forUserID.split(/&lat=\S+/)[0];
-
-    var interim = forUserID.split("&lon=");
-    var lat = interim[0].split("&lat=")[1];
-    var lon = interim[1];
+        userID = forUserID.split(/&lat=\S+/)[0],
+        interim = forUserID.split("&lon="),
+        lat = interim[0].split("&lat=")[1],
+        lon = interim[1];
         time = new Date().toDateString();
 
     // HACKY HACKY HACKY way of dealing with url encoding anomalies
@@ -41,9 +40,6 @@ endpoints['/main POST'] = function(req, res, next){
         quackIDs = [];
     }
     quackIDs.push(id); // store id in local file
-
-
-
     client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, function handler(err, reply){
         res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat : lat, lon : lon}]));
         next();

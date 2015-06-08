@@ -17,12 +17,8 @@ function postQuack(){
         giveCookie();
     }
     navigator.geolocation.getCurrentPosition(function(response){
-
-        //console.log("response " + response);
         lat = response.coords.latitude;
         lon = response.coords.longitude;
-
-
         request.open('POST', '/main?quack=' + quackText + '&userID=' + quackCookie + '&lat=' + lat + '&lon=' + lon);
         request.send();
     });
@@ -35,8 +31,6 @@ function postQuack(){
         }
     };
     quack.value = '';
-
-
 }
 
 
