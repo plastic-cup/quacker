@@ -40,8 +40,8 @@ endpoints['/main POST'] = function(req, res, next){
     if (!quackIDs){
         quackIDs = [];
     }
-    base.addQuack(id, quack, time, userID, function handler(err, reply){
-      res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
+    base.addQuack(id, quack, time, userID, lat, lon, function handler(err, reply){
+      res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
       next();
     });
 };

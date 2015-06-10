@@ -2,8 +2,8 @@ module.exports = function(fake){
   var client = fake || require('redis').createClient();
   var base = {};
 
-  base.addQuack = function(id, quack, time, userID, callback){
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, callback);
+  base.addQuack = function(id, quack, time, userID, lat, lon, callback){
+    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, callback);
   };
 
 
