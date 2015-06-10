@@ -4,7 +4,7 @@ module.exports = function(fake){
         client = fake;
     } else if (process.env.REDISTOGO_URL) {
         var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-        ctlien = require("redis").createClient(rtg.port, rtg.hostname);
+        client = require("redis").createClient(rtg.port, rtg.hostname);
 
         client.auth(rtg.auth.split(":")[1]);
     } else {
