@@ -61,7 +61,7 @@ test.run = function(){
         check(next);
     }
     next();
-    setTimeout(errors.forEach, function(error){throw error;}, 600);
+    setTimeout(function(){errors.forEach(function(error){throw error;});}, 600);
 };
 
 module.exports = test;

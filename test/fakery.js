@@ -7,10 +7,9 @@ fakery.data = {
 };
 
 fakery.keys = function(pattern, cb){
-  cb(undefined, Object.keys(fakery.data).filter(function(key){
+  return cb(undefined, Object.keys(fakery.data).filter(function(key){
     return key.match(pattern);
   }));
-  return 'OK';
 };
 
 fakery.hgetall = function(key, cb){
