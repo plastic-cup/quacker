@@ -21,10 +21,8 @@ module.exports = function(fake){
     client.keys('*', function(err, keys){
         keys.sort().forEach(function(e){
             client.hgetall(e, function(err, quack){
-                if (!err){
-                    quackStore.push(quack);
-                    if (quackStore.length === keys.length) onEnd();
-                }
+                quackStore.push(quack);
+                if (quackStore.length === keys.length) onEnd();
             });
         });
     });
@@ -33,9 +31,7 @@ module.exports = function(fake){
 
     base.quackle = function(id){
     client.del(id, function(err, reply){
-        if (!err){
-            console.log(reply + " quack removed from Db");
-        }
+        console.log(reply + " quack removed from Db");
     });
     };
 
