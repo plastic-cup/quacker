@@ -3,7 +3,7 @@ module.exports = function(fake){
     if (fake){
         client = fake;
     } else if (process.env.REDISTOGO_URL) {
-        var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+        var rtg = require("url").parse(process.env.REDISTOGO_URL);
         client = require("redis").createClient(rtg.port, rtg.hostname);
 
         client.auth(rtg.auth.split(":")[1]);
@@ -21,8 +21,10 @@ module.exports = function(fake){
     client.keys('*', function(err, keys){
         keys.sort().forEach(function(e){
             client.hgetall(e, function(err, quack){
-                quackStore.push(quack);
-                if (quackStore.length === keys.length) onEnd();
+                if (!err){
+                    quackStore.push(quack);
+                    if (quackStore.length === keys.length) onEnd();
+                }
             });
         });
     });
@@ -31,7 +33,9 @@ module.exports = function(fake){
 
     base.quackle = function(id){
     client.del(id, function(err, reply){
-        console.log(reply + " quack removed from Db");
+        if (!err){
+            console.log(reply + " quack removed from Db");
+        }
     });
     };
 
