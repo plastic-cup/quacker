@@ -1,11 +1,19 @@
 var http = require("http"),
     fs = require('fs'),
+<<<<<<< HEAD
     express = require("./index.js");
     endpoints = require("./endpoints")();
     port = process.env.PORT || 8000;
+=======
+    express = require("./index.js"),
+    endpoints = require("./endpoints"),
+    port = process.env.PORT || 8000,
+>>>>>>> redis
     app = express();
 
-http.createServer(app).listen(port);
+var server = http.createServer(app).listen(port);
+
+var socketio = require('socket.io')(server);
 
 app.route('/ GET', endpoints.homepage);
 app.route('/ GET', endpoints['/main GET']);
@@ -22,6 +30,11 @@ app.route('/main DELETE', errorHandler);
 app.route('generic', endpoints.default);
 app.route('generic', errorHandler);
 
+socketio.on('connection', function (socket) {
+    socket.on('quack', function(data){
+        socketio.emit('quack', data);
+    });
+});
 
 function errorHandler(err, request, response, next){
     console.error(err);
