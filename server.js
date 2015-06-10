@@ -1,7 +1,7 @@
 var http = require("http"),
     fs = require('fs'),
     express = require("./index.js");
-    endpoints = require("./endpoints");
+    endpoints = require("./endpoints")();
     port = process.env.PORT || 8000;
     app = express();
 

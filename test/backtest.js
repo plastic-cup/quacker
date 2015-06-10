@@ -5,61 +5,64 @@ var fs = require('fs');
 var stream = require('stream');
 var baseMake = require('../base');
 var fakery = require('./fakery');
-var endpoints = require('../endpoints.js'),
+var endpoints = require('../endpoints.js')(baseMake(fakery)),
     requestURL = "/main?quack=blah&userID=0000&lat=00000&lon=00000",
     errors = [],
     testReq,
     testRes;
 
-endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: requestURL}, function(req, res){
-    fakery.keys(/.*/, function(err, data){
-        var length = data.length;
+fakery.keys(/.*/, function(err,data){
+    var length = data.length;
+    endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', url: requestURL}, function(req, res){
         return function(){
             console.log("# Has a new quack been created?");
             fakery.keys(/.*/, function(err, data){
                 quacksert(assert.equal, data.length, length + 1);
             });
         };
-    });
-}));
+    }));
+});
 
 
-// endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE'}, function(req,res){
-//     var currentQuax = endpoints.quackIDs.length;
-//     var doomedQuack = endpoints.quackIDs[endpoints.quackIDs.length];
-//     req.push('{"id":'+ doomedQuack +'}');
-//     req.push(null);
-//     return function(){
-//         console.log("# Has a quack been deleted?");
-//         quacksert.async(assert.equal, Object.keys(endpoints.quax).length, currentQuax - 1);
-//     };
-// }));
 
-quacksert.async(endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+fakery.keys('*', function(err, data){
+    endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', url: requestURL}, function(req, res){
+        req.push('{"id": "1"}');
+        req.push(null);
+        return function(){
+            console.log('# Has a quack been deleted');
+            fakery.keys('*', function(err, newData){
+                quacksert(assert.equal, data.length, newData.length);
+            });
+        };
+    }));
+});
+
+endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
     var index = fs.readFileSync(__dirname + '/../index.html');
     return function(){
         console.log('# do we get index back from homepage?');
         assertWell(assert.equal, res.output[2].toString(), index.toString());
     };
-})));
+}));
 
-// quacksert.async(function(){
-//     fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
-//     endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-//         return function(error){
-//             console.log('# do we get an error if index is gone?');
-//             assertWell(assert.ok, error);
-//             fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
-//         };
-//     }));
-// });
-
-quacksert.async(endpoints['/main GET'].apply, null, testReqAndRes({method:'GET'}, function(req, res){
-    return function(){
-        console.log("# Does response contain something quack-like?");
-        assertWell(assert.ok, res.body.indexOf('"quack":') > -1 && res.body.indexOf("time") > -1);
+fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
+endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+    return function(error){
+        console.log('# do we get an error if index is gone?');
+        assertWell(assert.ok, error);
+        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
     };
 }));
+
+endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, res){
+    return function(){
+        var output = JSON.stringify(res.output);
+        console.log("# Does response contain something quack-like?");
+        assertWell(assert.ok, output.indexOf("quack") > -1 && output.indexOf("time") > -1);
+    };
+}));
+
 
 endpoints.default.apply(null, testReqAndRes({method: 'GET', url: 'hi.bye'}, function(req,res){
     return function(error){
@@ -84,14 +87,6 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, 
     };
 }));
 
-// endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: requestURL}, function(req, res){
-//     endpoints.reset();
-//         return function(){
-//             console.log("# Does post still work with an empty quax?");
-//             assertWell(assert.ok, endpoints.quax);
-//         };
-// }));
-
 var longQuack = "";
 for (var i = 0; i < 1000; i++){
     longQuack += "blah%20";
@@ -102,10 +97,6 @@ endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my qua
 }));
 
 quacksert.run();
-
-// setTimeout(function(){
-//     errors.forEach(function(error){throw error;});
-// }, 600);
 
 function assertWell(assertionMethod){
   try {
