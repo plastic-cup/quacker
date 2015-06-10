@@ -22,6 +22,7 @@ endpoints = function(fake){
         '/main POST': function(req, res, next){
             var id = new Date().getTime() + Math.floor(Math.random() * 1000);
             var noMain = req.url.split(/\/main\?quack=/)[1];
+            console.log(quack);
             var quack = noMain.split(/&userID=\S+/)[0],
                 forUserID = noMain.split(/userID=/)[1],
                 userID = forUserID.split(/&lat=\S+/)[0],
