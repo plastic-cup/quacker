@@ -1,5 +1,5 @@
-module.exports = (function(fake){
-  var client = fake || require('redis');
+module.exports = function(fake){
+  var client = fake || require('redis').createClient();
   var base = {};
 
   base.addQuack = function(id, quack, time, userID, callback){
@@ -31,4 +31,4 @@ module.exports = (function(fake){
 
   return base;
 
-}());
+};

@@ -1,7 +1,8 @@
 var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
-    base = require('./base'),
+    baseMake = require('./base'),
+    base = baseMake(),
     quackIDs,
     quaxFromDb = [];
 
@@ -20,7 +21,7 @@ function duckTranslate(quack){
 
 endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000);
-    var brokenUrl = req.url.split(/\/main\?quack=/)[1];
+    var brokenUrl = req.url.split('/main?quack=')[1];
     var quack = brokenUrl.split(/&userID=\d+/)[0],
         userID = brokenUrl.split(/\S+userID=/)[1],
         time = new Date().toDateString();
