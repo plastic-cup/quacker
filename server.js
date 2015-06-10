@@ -1,14 +1,8 @@
 var http = require("http"),
     fs = require('fs'),
-<<<<<<< HEAD
     express = require("./index.js");
     endpoints = require("./endpoints")();
     port = process.env.PORT || 8000;
-=======
-    express = require("./index.js"),
-    endpoints = require("./endpoints"),
-    port = process.env.PORT || 8000,
->>>>>>> redis
     app = express();
 
 var server = http.createServer(app).listen(port);
