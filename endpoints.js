@@ -34,9 +34,9 @@ endpoints = function(fake){
 
 
             // HACKY HACKY HACKY way of dealing with url encoding anomalies
-            quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
-            quack = quack.replace(/%22/g, '"').replace(/%3E/g, "&lt;").replace(/%3C/g, "&gt;");
-            quack = duckTranslate(quack);
+            quack = quack && quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
+            quack = quack && quack.replace(/%22/g, '"').replace(/%3E/g, "&lt;").replace(/%3C/g, "&gt;");
+            quack = quack && duckTranslate(quack);
 
             if (!quackIDs){
                 quackIDs = [];
