@@ -16,11 +16,18 @@ function postQuack(){
     var quack = document.getElementById('enterQuack');
     var request = new XMLHttpRequest();
     var quackText = quack.value.replace(/\./g, '%2E').replace(/\#/g, '%23');
+    var lat;
+    var lon;
+
     if (quackCookie.length !== 8){
         giveCookie();
     }
-    request.open('POST', '/main?quack=' + quackText + '&userID=' + quackCookie);
-    request.send();
+    navigator.geolocation.getCurrentPosition(function(response){
+        lat = response.coords.latitude;
+        lon = response.coords.longitude;
+        request.open('POST', '/main?quack=' + quackText + '&userID=' + quackCookie + '&lat=' + lat + '&lon=' + lon);
+        request.send();
+    });
     request.onreadystatechange = function(){
         if (request.readyState === 4){
             if (request.status === 200){
@@ -31,6 +38,7 @@ function postQuack(){
     };
     quack.value = '';
 }
+
 
 function giveCookie(){
     if (IDIndex === -1){
@@ -52,7 +60,7 @@ function showQuack(quack){
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + '</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + " <br>At lat: " + quack.lat + ", lon: " + quack.lon + '</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');
