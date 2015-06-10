@@ -20,7 +20,7 @@ var quack = function(assertionMethod, argumentArray){
         assertionMethod.apply(null, argumentArray);
         testsRunning--;
         waitingAsync();
-      }
+    }
     catch (e) {
         errors.push(e);
         testsRunning--;
@@ -61,7 +61,7 @@ test.run = function(){
         check(next);
     }
     next();
-    errors.forEach(function(error){throw error;});
+    setTimeout(errors.forEach, function(error){throw error;}, 600);
 };
 
 module.exports = test;

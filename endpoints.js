@@ -1,8 +1,9 @@
 var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
-    client = redis.createClient(),
-    quackIDs = JSON.parse(fs.readFileSync(__dirname + '/quackIDs.json','utf8')),
+    baseMake = require('./base'),
+    base = baseMake(),
+    quackIDs,
     quaxFromDb = [];
 
 endpoints.reset = function(){
@@ -11,7 +12,7 @@ endpoints.reset = function(){
 
 function duckTranslate(quack){
     quackWords = quack.split(' ');
-    quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
+    quackChance = 1 - 1/(Math.pow(quackWords.length/10,0.15) + 0.01);
     return quackWords.map(function(element){
         var random = Math.random();
         return random < quackChance ? 'QUACK' : element;
@@ -20,7 +21,6 @@ function duckTranslate(quack){
 
 endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000);
-
     var noMain = req.url.split(/\/main\?quack=/)[1];
     var quack = noMain.split(/&userID=\S+/)[0],
         forUserID = noMain.split(/userID=/)[1],
@@ -28,6 +28,7 @@ endpoints['/main POST'] = function(req, res, next){
         interim = forUserID.split("&lon="),
         lat = interim[0].split("&lat=")[1],
         lon = interim[1];
+
         time = new Date().toDateString();
 
 
@@ -39,30 +40,19 @@ endpoints['/main POST'] = function(req, res, next){
     if (!quackIDs){
         quackIDs = [];
     }
-    quackIDs.push(id); // store id in local file
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, function handler(err, reply){
-        res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat : lat, lon : lon}]));
-        next();
+    base.addQuack(id, quack, time, userID, function handler(err, reply){
+      res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
+      next();
     });
 };
 
 endpoints['/main GET'] = function(req, res, next){
-
-    quackIDs.forEach(function(e){
-        client.hgetall(e, function(err, quack){
-            if (!err){
-                quaxFromDb.push(quack);
-            }
-        });
+    base.getQuax(quaxFromDb, function(){
+        res._quaxJSON = JSON.stringify(quaxFromDb);
+        res.end(JSON.stringify(quaxFromDb));
+        quaxFromDb = [];
+        next();
     });
-    
-    res._quaxJSON = JSON.stringify(quaxFromDb);
-    res.end(JSON.stringify(quaxFromDb));
-
-
-
-    quaxFromDb = []; // HACKY HACKY HACKY, problems with repeating quacks
-    next();
 };
 
 endpoints['/main DELETE'] = function(req, res, next){
@@ -71,14 +61,8 @@ endpoints['/main DELETE'] = function(req, res, next){
         body += data;
     });
     req.on('end', function(){
-
         id = JSON.parse(body);
-
-        client.del(id, function(err, reply){
-            if (!err){
-                console.log(reply + " quack removed from Db");
-            }
-        });
+        base.quackle(id);
         next();
     });
 };
@@ -105,5 +89,4 @@ endpoints.default = function(req, res, next){
     });
 };
 
-endpoints.quackIDs = quackIDs;
 module.exports = endpoints;

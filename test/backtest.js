@@ -3,18 +3,12 @@ var quacksert = require('./quacksert');
 var http = require('http');
 var fs = require('fs');
 var stream = require('stream');
+var baseMake = require('../base');
+var fakery = require('./fakery');
 var endpoints = require('../endpoints.js'),
     errors = [],
     testReq,
     testRes;
-
-// endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "quack=blah&userId=idiot"}, function(req, res){
-//     var currentQuax = Object.keys(endpoints.quax).length;
-//     return function(){
-//         console.log("# Has a new quack been created?");
-//         quacksert(assert.equal, Object.keys(endpoints.quax).length, currentQuax + 1);
-//     };
-// }));
 
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: "/main?quack=blah&userID=0000&lat=00000&lon=00000"}, function(req, res){
     var currentQuax = endpoints.quackIDs.length;
@@ -23,6 +17,7 @@ endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my qua
         quacksert(assert.equal, endpoints.quackIDs.length, currentQuax + 1);
     };
 }));
+
 
 // endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE'}, function(req,res){
 //     var currentQuax = endpoints.quackIDs.length;
@@ -35,16 +30,16 @@ endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my qua
 //     };
 // }));
 
-endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+quacksert.async(endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
     var index = fs.readFileSync(__dirname + '/../index.html');
     return function(){
         console.log('# do we get index back from homepage?');
         assertWell(assert.equal, res.output[2].toString(), index.toString());
     };
-}));
+})));
 
 quacksert.async(function(){
-    fs.rename(__dirname + '/../index.html', __dirname +'/../indes.html');
+    fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
     endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
         return function(error){
             console.log('# do we get an error if index is gone?');
@@ -54,7 +49,7 @@ quacksert.async(function(){
     }));
 });
 
-endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, res){
+quacksert.async(endpoints['/main GET'].apply, null, testReqAndRes({method:'GET'}, function(req, res){
     return function(){
         console.log("# Does response contain something quack-like?");
         assertWell(assert.ok, res.body.indexOf('"quack":') > -1 && res.body.indexOf("time") > -1);
@@ -63,14 +58,14 @@ endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, r
 
 endpoints.default.apply(null, testReqAndRes({method: 'GET', url: 'hi.bye'}, function(req,res){
     return function(error){
-      console.log('do we get an error with a none-existent file?');
+      console.log('# do we get an error with a none-existent file?');
       assert(error);
     };
 }));
 
 endpoints.default.apply(null, testReqAndRes({method: 'GET', url: 'hiiii'}, function(req,res){
     return function(error){
-      console.log('do we get an error with a bad path?');
+      console.log('# do we get an error with a bad path?');
       assert(error);
     };
 
@@ -98,6 +93,7 @@ for (var i = 0; i < 1000; i++){
     longQuack += "blah%20";
 }
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: '/main?quack=' + longQuack + '&userID=0000&lat=0000&lon=0000'}, function(req, res){
+
   return function(){assert(true);};
 }));
 

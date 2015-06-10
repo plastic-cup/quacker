@@ -28,7 +28,3 @@ function errorHandler(err, request, response, next){
     response.writeHead(500);
     response.end(err.toString());
 }
-
-setInterval(function(){
-    fs.writeFile(__dirname + '/quackIDs.json', JSON.stringify(endpoints.quackIDs));
-},1000);
