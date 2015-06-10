@@ -2,7 +2,6 @@ var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
     client = redis.createClient(),
-    //quax = JSON.parse(fs.readFileSync(__dirname + '/quax.json','utf8')),
     quackIDs = JSON.parse(fs.readFileSync(__dirname + '/quackIDs.json','utf8')),
     quaxFromDb = [];
 
@@ -24,12 +23,13 @@ endpoints['/main POST'] = function(req, res, next){
 
     var noMain = req.url.split(/\/main\?quack=/)[1];
     var quack = noMain.split(/&userID=\S+/)[0],
-        forUserID = noMain.split(/\S+userID=/)[1],
+        forUserID = noMain.split(/userID=/)[1],
         userID = forUserID.split(/&lat=\S+/)[0],
         interim = forUserID.split("&lon="),
         lat = interim[0].split("&lat=")[1],
         lon = interim[1];
         time = new Date().toDateString();
+
 
     // HACKY HACKY HACKY way of dealing with url encoding anomalies
     quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
@@ -55,8 +55,11 @@ endpoints['/main GET'] = function(req, res, next){
             }
         });
     });
+    
     res._quaxJSON = JSON.stringify(quaxFromDb);
     res.end(JSON.stringify(quaxFromDb));
+
+
 
     quaxFromDb = []; // HACKY HACKY HACKY, problems with repeating quacks
     next();
