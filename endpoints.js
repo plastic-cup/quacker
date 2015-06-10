@@ -26,8 +26,9 @@ endpoints['/main POST'] = function(req, res, next){
         time = new Date().toDateString();
 
     // HACKY HACKY HACKY way of dealing with url encoding anomalies
-    quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
-    quack = quack.replace(/%22/g, '"').replace(/%3E/g, ">").replace(/%3C/g, "<");
+    console.log(quack);
+    quack = quack.replace(/%20/g, '&#32;').replace(/%2E/g, '&#46;').replace(/%27/g, "&#39;").replace(/%A3/g, "£").replace(/%80/g, "€");
+    quack = quack.replace(/%22/g, '&#34;').replace(/%3E/g, "&gt;").replace(/%3C/g, "&lt;").replace(/%23/g, "&#35;");
     quack = duckTranslate(quack);
 
     if (!quackIDs){

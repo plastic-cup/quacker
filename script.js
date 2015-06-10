@@ -15,7 +15,7 @@ socket.on('quack', function(data){
 function postQuack(){
     var quack = document.getElementById('enterQuack');
     var request = new XMLHttpRequest();
-    var quackText = quack.value.replace(/\./g, '%2E');
+    var quackText = quack.value.replace(/\./g, '%2E').replace(/\#/g, '%23');
     if (quackCookie.length !== 8){
         giveCookie();
     }

@@ -27,6 +27,9 @@
     "ripoff",
     "riches"
   ],
+  "engines": {
+    "node": "0.12.4"
+  },
   "author": "plastic-cup",
   "license": "ISC",
   "bugs": {
