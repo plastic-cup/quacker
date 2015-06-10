@@ -1,7 +1,8 @@
 var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
-    client = redis.createClient(),
+    baseMake = require('./base'),
+    base = baseMake(),
     quackIDs,
     quaxFromDb = [];
 
@@ -11,7 +12,7 @@ endpoints.reset = function(){
 
 function duckTranslate(quack){
     quackWords = quack.split(' ');
-    quackChance = 1 - 0.99/(Math.pow(quackWords.length,0.01) + 0.01);
+    quackChance = 1 - 1/(Math.pow(quackWords.length/10,0.15) + 0.01);
     return quackWords.map(function(element){
         var random = Math.random();
         return random < quackChance ? 'QUACK' : element;
@@ -20,10 +21,16 @@ function duckTranslate(quack){
 
 endpoints['/main POST'] = function(req, res, next){
     var id = new Date().getTime() + Math.floor(Math.random() * 1000);
-    var brokenUrl = req.url.split(/\/main\?quack=/)[1];
-    var quack = brokenUrl.split(/&userID=\d+/)[0],
-        userID = brokenUrl.split(/\S+userID=/)[1],
+    var noMain = req.url.split(/\/main\?quack=/)[1];
+    var quack = noMain.split(/&userID=\S+/)[0],
+        forUserID = noMain.split(/userID=/)[1],
+        userID = forUserID.split(/&lat=\S+/)[0],
+        interim = forUserID.split("&lon="),
+        lat = interim[0].split("&lat=")[1],
+        lon = interim[1];
+
         time = new Date().toDateString();
+
 
     // HACKY HACKY HACKY way of dealing with url encoding anomalies
     quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
@@ -33,31 +40,19 @@ endpoints['/main POST'] = function(req, res, next){
     if (!quackIDs){
         quackIDs = [];
     }
-
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, function handler(err, reply){
-        console.log(reply);
-        res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id}]));
-        next();
+    base.addQuack(id, quack, time, userID, lat, lon, function handler(err, reply){
+      res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
+      next();
     });
 };
 
 endpoints['/main GET'] = function(req, res, next){
-
-    client.keys('*', function(err, keys){
-        keys.forEach(function(e){
-            client.hgetall(e, function(err, quack){
-                if (!err){
-                    quaxFromDb.push(quack);
-                }
-            });
-        });
+    base.getQuax(quaxFromDb, function(){
+        res._quaxJSON = JSON.stringify(quaxFromDb);
+        res.end(JSON.stringify(quaxFromDb));
+        quaxFromDb = [];
+        next();
     });
-
-    res._quaxJSON = JSON.stringify(quaxFromDb);
-    res.end(JSON.stringify(quaxFromDb));
-
-    quaxFromDb = []; // HACKY HACKY HACKY, problems with repeating quacks
-    next();
 };
 
 endpoints['/main DELETE'] = function(req, res, next){
@@ -66,16 +61,8 @@ endpoints['/main DELETE'] = function(req, res, next){
         body += data;
     });
     req.on('end', function(){
-
         id = JSON.parse(body);
-        client.on("error", function (err) {
-            console.log("Error " + err);
-        });
-        client.del(id, function(err, reply){
-            if (!err){
-                console.log(reply + " quack removed from Db");
-            }
-        });
+        base.quackle(id);
         next();
     });
 };
@@ -102,5 +89,4 @@ endpoints.default = function(req, res, next){
     });
 };
 
-// endpoints.quackIDs = quackIDs;
 module.exports = endpoints;
