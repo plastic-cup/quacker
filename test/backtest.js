@@ -42,6 +42,7 @@ endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res)
     var index = fs.readFileSync(__dirname + '/../index.html');
     return function(){
         console.log('# do we get index back from homepage?');
+        console.log(res.output);
         assertWell(assert.equal, res.output[2].toString(), index.toString());
     };
 }));
