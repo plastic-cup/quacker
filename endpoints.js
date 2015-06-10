@@ -45,7 +45,7 @@ endpoints = function(fake){
                 if (quack){
                     res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
                 } else {
-                    res.end('Simon is cool');
+                    res.end(JSON.stringify([{quack: 'Simon is cool', time : 'Today' }]));
                 }
               next();
             });
