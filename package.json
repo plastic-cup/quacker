@@ -38,5 +38,8 @@
     "istanbul": "^0.3.14",
     "jshint": "^2.8.0",
     "pre-commit": "^1.0.7"
+  },
+  "dependencies": {
+    "redis": "^0.12.1"
   }
 }
