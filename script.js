@@ -1,6 +1,13 @@
 var sendQuack = document.getElementById('sendQuack'),
     IDIndex = document.cookie.indexOf('userID'),
     quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15),
+    enterQuack = document.getElementById('enterQuack'),
+    placeholders = ['You\'ve got to ask yourself one question: "Do I feel Quacky?" Well, do ya, punk?',
+                    'Quacks? Where we\'re going, we don\'t need Quacks!', 'Get to the Quacker!',
+                    'I\'ll be Quack.', 'Use the Quack, Luke.', 'Quacks. Why\'d it have to be Quacks?',
+                    'I have had it with these motherQuacking snakes on this motherQuacking plane!',
+                    'I wish I knew how to Quack you.', 'I\'ll Quack what she\'s Quacking.', 'Here\'s Quacking at you, kid.',
+                    'Don\'t cross the Quacks.'],
     quacks,
     socket = io();
 
@@ -12,8 +19,10 @@ socket.on('quack', function(data){
     showQuack(data[0]);
 });
 
+enterQuack.placeholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+
 function postQuack(){
-    var quack = document.getElementById('enterQuack');
+    var quack = enterQuack;
     var request = new XMLHttpRequest();
     var quackText = quack.value.replace(/\./g, '%2E');
     var lat;
