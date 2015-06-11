@@ -15,7 +15,7 @@ navigator.geolocation.getCurrentPosition(function(position) {
     //     dataStore.push({lat:(ourLat+0.1), lon:((ourLon+0.1)*i)});
     // }
     //console.log(ourLat, "\n", ourLon, "\n", dataStore);
-    map.setView([ourLat, ourLon], 15);
+    map.setView([ourLat, ourLon], 11);
 
     var circle = L.circle([ourLat,ourLon], 20, { // Your location
     color: 'red',
@@ -40,8 +40,8 @@ function ducksOnMap(quackLocation){
     console.log(quackLocation);
     var quackIcon = L.icon({
         iconUrl: 'duck.gif',
-        iconSize:     [40, 40], // Width, Height
-        iconAnchor:   [20, 40], // WidthAnc should be about 0.5% and heighAnc about the same as height
+        iconSize:     [15, 15], // Width, Height
+        iconAnchor:   [7.5, 7.5], // WidthAnc should be about 0.5% and heighAnc about the same as height
     });
 
     var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map);
