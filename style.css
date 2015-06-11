@@ -89,17 +89,18 @@
     top : 10px;
 }
 
-#map{ 
-    height:90em;
-    width:90em;
+#map{
+    height:40em;
+    width: 70em;
+    margin-top: 10%;
     margin-left: auto;
     margin-right: auto;
 
 }
 #positionLat{
     color:maroon;
-}   
+}
 
 #positionLon{
     color:maroon;
-}   
+}
