@@ -10,11 +10,11 @@ navigator.geolocation.getCurrentPosition(function(position) {
 
     ourLat = position.coords.latitude;
     ourLon = position.coords.longitude;
-    dataStore.push({lat: ourLat, lon: ourLon});
-    for(var i = 0; i<10; i++){
-        dataStore.push({lat:(ourLat+0.1), lon:((ourLon+0.1)*i)});
-    }
-    console.log(ourLat, "\n", ourLon, "\n", dataStore);
+    // dataStore.push({lat: ourLat, lon: ourLon});
+    // for(var i = 0; i<10; i++){
+    //     dataStore.push({lat:(ourLat+0.1), lon:((ourLon+0.1)*i)});
+    // }
+    //console.log(ourLat, "\n", ourLon, "\n", dataStore);
     map.setView([ourLat, ourLon], 15);
 
     var circle = L.circle([ourLat,ourLon], 20, { // Your location
@@ -22,7 +22,6 @@ navigator.geolocation.getCurrentPosition(function(position) {
     fillColor: '#f03',
     fillOpacity: 0.5
     }).addTo(map);
-    ducksOnMap(dataStore);
 
 });
 
@@ -37,20 +36,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     accessToken: 'pk.eyJ1IjoibWluYW9yYW5naW5hIiwiYSI6ImEzZjg0YTFmZDQyOWJjZWUzNTUzZWZjMWExZDY1MTUxIn0.fLBy0l7Add3vACuMZH_iFA'
 }).addTo(map);
 
-function ducksOnMap(array){
-
+function ducksOnMap(quackLocation){
+    console.log(quackLocation);
     var quackIcon = L.icon({
         iconUrl: 'duck.gif',
         iconSize:     [40, 40], // Width, Height
         iconAnchor:   [20, 40], // WidthAnc should be about 0.5% and heighAnc about the same as height
     });
 
-
-    for (var i = 0; i < array.length; i++){
-        //console.log(array[i]);
-        var marker = L.marker([array[i].lat, array[i].lon],{icon: quackIcon}).addTo(map);
-    }
-
+    var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map);
 }
 
 
