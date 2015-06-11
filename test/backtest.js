@@ -23,7 +23,12 @@ fakery.keys(/.*/, function(err,data){
     }));
 });
 
-
+endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', url: requestURL.replace("quack", "content")}, function(req, res){
+    return function(err){
+        console.log("# Do we get an error without a quack?");
+        quacksert(assert.ok, err);
+    };
+}));
 
 fakery.keys('*', function(err, data){
     endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', url: requestURL}, function(req, res){
