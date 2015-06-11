@@ -9,6 +9,12 @@ body {
 #bar {
     background-color: #057f63;
     margin: 0;
+    margin-top: 3%;
+}
+
+#bar > h1{
+    text-align: center;
+    font-size: 5em;
 }
 
 #enterQuack {

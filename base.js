@@ -13,8 +13,8 @@ module.exports = function(fake){
     // }
     var base = {};
 
-    base.addQuack = function(id, quack, time, userID, lat, lon, callback){
-    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, callback);
+    base.addQuack = function(id, quack, time, userID, lat, lon, address, callback){
+    client.hmset(id, "quack", quack, "time", time, "userID", userID, "id", id, "lat", lat, "lon", lon, "address", address, callback);
     };
 
 

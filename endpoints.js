@@ -1,6 +1,7 @@
 var endpoints = {},
     fs = require('fs'),
     redis = require('redis'),
+    request = require('request'),
     quackIDs,
     quaxFromDb = [];
 
@@ -31,6 +32,8 @@ endpoints = function(fake){
                 lon = interim && interim[1];
 
                 time = new Date().toDateString();
+            var geolocationName;
+
 
 
             // HACKY HACKY HACKY way of dealing with url encoding anomalies
@@ -38,17 +41,22 @@ endpoints = function(fake){
             quack = quack && quack.replace(/%22/g, '"').replace(/%3E/g, "&gt;").replace(/%3C/g, "&lt;").replace(/%23/g, '&#35;');
             quack = quack && duckTranslate(quack);
 
-            if (!quackIDs){
-                quackIDs = [];
+            if (!quack){
+                res.writeHead(500);
+                res.end();
+                next(new Error("Gosh darn it, no quack!"));
+            } else {
+                request("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon, function(err, response, body){
+                    if (!err && response.statusCode === 200){
+                        geolocationName = JSON.parse(body).address.road + ", " + JSON.parse(body).address.suburb;
+                        base.addQuack(id, quack, time, userID, lat, lon, geolocationName, function handler(err, reply){
+                            res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon, address: geolocationName}]));
+                            next();
+                        });
+                    }
+                });
             }
-            base.addQuack(id, quack, time, userID, lat, lon, function handler(err, reply){
-                if (quack){
-                    res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
-                } else {
-                    res.end();
-                }
-              next();
-            });
+
         },
 
         '/main GET': function(req, res, next){
