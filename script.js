@@ -24,7 +24,7 @@ enterQuack.placeholder = placeholders[Math.floor(Math.random() * placeholders.le
 function postQuack(){
     var quack = enterQuack;
     var request = new XMLHttpRequest();
-    var quackText = quack.value.replace(/\./g, '%2E');
+    var quackText = quack.value.replace(/\./g, '%2E').replace(/#/g, '%23');
     var lat;
     var lon;
     if (quackCookie.length !== 8){
