@@ -38,14 +38,6 @@ fakery.keys('*', function(err, data){
     }));
 });
 
-endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-    var index = fs.readFileSync(__dirname + '/../index.html');
-    return function(){
-        console.log('# do we get index back from homepage?');
-        assertWell(assert.equal, res.output[2].toString(), index.toString());
-    };
-}));
-
 endpoints['/main GET'].apply(null, testReqAndRes({method:'GET'}, function(req, res){
     return function(){
         var output = JSON.stringify(res.output);
@@ -78,15 +70,6 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, 
     };
 }));
 
-fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
-endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-    return function(error){
-        console.log('# do we get an error if index is gone?');
-        assertWell(assert.ok, error);
-        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
-    };
-}));
-
 var longQuack = "";
 for (var i = 0; i < 1000; i++){
     longQuack += "blah%20";
@@ -94,6 +77,23 @@ for (var i = 0; i < 1000; i++){
 endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', body: 'my quack', url: requestURL.replace("blah", longQuack)}, function(req, res){
 
   return function(){assert(true);};
+}));
+
+fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
+endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+    return function(error){
+        console.log('# do we get an error if index is gone?');
+        assertWell(assert.ok, error);
+        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html', function(){
+          endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+              var index = fs.readFileSync(__dirname + '/../index.html');
+              return function(){
+                  console.log('# do we get index back from homepage?');
+                  assertWell(assert.equal, res.output[2].toString(), index.toString());
+              };
+          }));
+        });
+    };
 }));
 
 quacksert.run();
