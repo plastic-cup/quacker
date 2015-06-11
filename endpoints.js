@@ -6,7 +6,7 @@ var endpoints = {},
 
 
 endpoints = function(fake){
-    var base = fake || require('base').baseMake();
+    var base = fake || require('base')();
 
     function duckTranslate (quack){
         quackWords = quack.split(' ');

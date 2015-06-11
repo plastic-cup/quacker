@@ -19,7 +19,7 @@ We want to make an app that's good for publishing short thoughts and seeing othe
   + [x] Some authentication process
     + [x] Cookies
 
-  + [ ] LIVE on HEROKU! Quack.
+  + [x] LIVE on HEROKU! Quack.
 
   + [x] Real-time quack updates
 

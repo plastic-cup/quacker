@@ -42,16 +42,8 @@ endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res)
     var index = fs.readFileSync(__dirname + '/../index.html');
     return function(){
         console.log('# do we get index back from homepage?');
+        console.log(res.output);
         assertWell(assert.equal, res.output[2].toString(), index.toString());
-    };
-}));
-
-fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
-endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
-    return function(error){
-        console.log('# do we get an error if index is gone?');
-        assertWell(assert.ok, error);
-        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
     };
 }));
 
@@ -84,6 +76,15 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, 
     return function(){
       console.log('can we get the css file?');
       assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('*')).slice(0,10));
+    };
+}));
+
+fs.renameSync(__dirname + '/../index.html', __dirname +'/../indes.html');
+endpoints.homepage.apply(null, testReqAndRes({method: 'GET'}, function(req, res){
+    return function(error){
+        console.log('# do we get an error if index is gone?');
+        assertWell(assert.ok, error);
+        fs.rename(__dirname + '/../indes.html', __dirname + '/../index.html');
     };
 }));
 
