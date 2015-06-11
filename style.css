@@ -88,3 +88,18 @@
     right : 10px;
     top : 10px;
 }
+
+#map{ 
+    height:90em;
+    width:90em;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+#positionLat{
+    color:maroon;
+}   
+
+#positionLon{
+    color:maroon;
+}   
