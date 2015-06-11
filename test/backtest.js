@@ -6,7 +6,7 @@ var stream = require('stream');
 var baseMake = require('../base');
 var fakery = require('./fakery');
 var endpoints = require('../endpoints.js')(baseMake(fakery)),
-    requestURL = "/main?quack=blah&userID=0000&lat=00000&lon=00000",
+    requestURL = "/main?quack=blah&userID=0000&lat=51.5295366&lon=-0.042176",
     errors = [],
     testReq,
     testRes;
