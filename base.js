@@ -2,14 +2,15 @@ module.exports = function(fake){
     var client;
     if (fake){
         client = fake;
-    } else if (process.env.REDISTOGO_URL) {
-        var rtg = require("url").parse(process.env.REDISTOGO_URL);
-        client = require("redis").createClient(rtg.port, rtg.hostname);
-
-        client.auth(rtg.auth.split(":")[1]);
     } else {
-        client = require("redis").createClient();
+        var rtg = require("url").parse(process.env.REDISTOGO_URL);
+        console.log(rtg.port, rtg.hostname);
+        client = require("redis").createClient(rtg.port, rtg.hostname);
+        client.auth(rtg.auth.split(":")[1]);
     }
+    // } else {
+    //     client = require("redis").createClient();
+    // }
     var base = {};
 
     base.addQuack = function(id, quack, time, userID, lat, lon, callback){
