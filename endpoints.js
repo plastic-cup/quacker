@@ -6,7 +6,7 @@ var endpoints = {},
 
 
 endpoints = function(fake){
-    var base = fake || require('base')();
+    var base = fake || require('./base')();
 
     function duckTranslate (quack){
         quackWords = quack.split(' ');
@@ -22,26 +22,31 @@ endpoints = function(fake){
         '/main POST': function(req, res, next){
             var id = new Date().getTime() + Math.floor(Math.random() * 1000);
             var noMain = req.url.split(/\/main\?quack=/)[1];
-            var quack = noMain.split(/&userID=\S+/)[0],
-                forUserID = noMain.split(/userID=/)[1],
-                userID = forUserID.split(/&lat=\S+/)[0],
-                interim = forUserID.split("&lon="),
-                lat = interim[0].split("&lat=")[1],
-                lon = interim[1];
+
+            var quack = noMain && noMain.split(/&userID=\S+/)[0],
+                forUserID = noMain && noMain.split(/userID=/)[1],
+                userID = forUserID && forUserID.split(/&lat=\S+/)[0],
+                interim = forUserID && forUserID.split("&lon="),
+                lat = interim && interim[0].split("&lat=")[1],
+                lon = interim && interim[1];
 
                 time = new Date().toDateString();
 
 
             // HACKY HACKY HACKY way of dealing with url encoding anomalies
-            quack = quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
-            quack = quack.replace(/%22/g, '"').replace(/%3E/g, ">").replace(/%3C/g, "<");
-            quack = duckTranslate(quack);
+            quack = quack && quack.replace(/%20/g, ' ').replace(/%2E/g, '.').replace(/%27/g, "'").replace(/%A3/g, "£").replace(/%80/g, "€");
+            quack = quack && quack.replace(/%22/g, '"').replace(/%3E/g, "&gt;").replace(/%3C/g, "&lt;");
+            quack = quack && duckTranslate(quack);
 
             if (!quackIDs){
                 quackIDs = [];
             }
             base.addQuack(id, quack, time, userID, lat, lon, function handler(err, reply){
-              res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
+                if (quack){
+                    res.end(JSON.stringify([{quack : quack, time : time, userID : userID, id : id, lat: lat, lon: lon}]));
+                } else {
+                    res.end();
+                }
               next();
             });
         },
