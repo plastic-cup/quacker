@@ -6,7 +6,7 @@ var stream = require('stream');
 var baseMake = require('../base');
 var fakery = require('./fakery');
 var endpoints = require('../endpoints.js')(baseMake(fakery)),
-    requestURL = "/main?quack=blah&userID=0000&lat=00000&lon=00000",
+    requestURL = "/main?quack=blah&userID=0000&lat=51.5295366&lon=-0.042176",
     errors = [],
     testReq,
     testRes;
@@ -23,7 +23,12 @@ fakery.keys(/.*/, function(err,data){
     }));
 });
 
-
+endpoints['/main POST'].apply(null, testReqAndRes({method: 'POST', url: requestURL.replace("quack", "content")}, function(req, res){
+    return function(err){
+        console.log("# Do we get an error without a quack?");
+        quacksert(assert.ok, err);
+    };
+}));
 
 fakery.keys('*', function(err, data){
     endpoints['/main DELETE'].apply(null, testReqAndRes({method: 'DELETE', url: requestURL}, function(req, res){

@@ -13,17 +13,17 @@ navigator.geolocation.getCurrentPosition(function(position) {
     dataStore.push({lat: ourLat, lon: ourLon});
     for(var i = 0; i<10; i++){
         dataStore.push({lat:(ourLat+0.1), lon:((ourLon+0.1)*i)});
-    };
+    }
     console.log(ourLat, "\n", ourLon, "\n", dataStore);
-    map.setView([ourLat, ourLon], 15); 
+    map.setView([ourLat, ourLon], 15);
 
     var circle = L.circle([ourLat,ourLon], 20, { // Your location
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5
-    }).addTo(map);   
+    }).addTo(map);
     ducksOnMap(dataStore);
- 
+
 });
 
 // var map = L.map('map').setView([51.505, -0.09], 13);
@@ -45,7 +45,7 @@ function ducksOnMap(array){
         iconAnchor:   [20, 40], // WidthAnc should be about 0.5% and heighAnc about the same as height
     });
 
-      
+
     for (var i = 0; i < array.length; i++){
         //console.log(array[i]);
         var marker = L.marker([array[i].lat, array[i].lon],{icon: quackIcon}).addTo(map);
@@ -78,4 +78,3 @@ function ducksOnMap(array){
 //     .openOn(map);
 
 // var marker = L.marker([51.5, -0.09]).addTo(map);
-
