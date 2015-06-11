@@ -96,7 +96,7 @@ endpoints = function(fake){
                 if (err) next(err);
                 else {
                     res.writeHead(200, {'Content-Type' : 'text/' + req.url.split('.')[1]});
-                    res.end(data.toString());
+                    res.end(data);
                     next();
                 }
             });
