@@ -30,5 +30,8 @@ node_modules
 # DS_Store
 .DS_Store
 
+#environment
+*.env
+
 # Redis
 redis-3.0.2
