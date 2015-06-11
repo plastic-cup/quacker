@@ -31,7 +31,7 @@ endpoints = function(fake){
                 lat = interim && interim[0].split("&lat=")[1],
                 lon = interim && interim[1];
 
-                time = new Date().toDateString();
+                time = new Date().toDateString() + " at " + new Date().toTimeString();
             var geolocationName;
 
 

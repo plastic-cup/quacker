@@ -83,6 +83,11 @@
     font-size : 0.7em;
 }
 
+#quackTime>span {
+    font-weight: 600;
+    /*color: #419E93*/
+}
+
 .deleteButton {
     position : absolute;
     right : 10px;
