@@ -70,12 +70,12 @@ function getQuackFromArray(quacksArray){
 
 function showQuack(quack){
     ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
-
+    console.log(typeof quack.lon);
     var geolocationName = quack.address;
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near </span>' + geolocationName + ' <span><br>(Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + ')</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><br><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near: </span><em>' + geolocationName + ' </em><span><br>Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + '</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');
