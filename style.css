@@ -23,6 +23,9 @@
 #quaxDiv {
     width: 100%;
 }
+.hidden {
+    display: none;
+}
 
 #toggles {
     width: 100%;
@@ -157,8 +160,4 @@
     .quack {
         width: 90%;
     }
-
-=======
-.hidden {
-    display: none;
 }
