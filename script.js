@@ -17,7 +17,7 @@ var sendQuack = document.getElementById('sendQuack'),
     socket = io();
 
 sendQuack.addEventListener('click', postQuack);
-sendQuack.addEventListener('keydown', function(event){
+enterQuack.addEventListener('keydown', function(event){
     if (event.keyCode === 13){
         postQuack();
     }
@@ -90,7 +90,7 @@ function showQuack(quack){
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near </span>' + geolocationName + ' <span><br>(Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + ')</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><br><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near: </span><em>' + geolocationName + ' </em><span><br>Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + '</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');
