@@ -128,3 +128,7 @@
 .hidden {
     display: none;
 }
+
+.hash {
+    color: blue;
+}

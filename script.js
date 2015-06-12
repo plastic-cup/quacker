@@ -11,7 +11,8 @@ var sendQuack = document.getElementById('sendQuack'),
                     'I\'ll be Quack.', 'Use the Quack, Luke.', 'Quacks. Why\'d it have to be Quacks?',
                     'I have had it with these motherQuacking snakes on this motherQuacking plane!',
                     'I wish I knew how to Quack you.', 'I\'ll Quack what she\'s Quacking.', 'Here\'s Quacking at you, kid.',
-                    'Don\'t cross the Quacks.', 'If you wanna be my Quacker, you gotta get with my Quack'],
+                    'Don\'t cross the Quacks.', 'If you wanna be my Quacker, you gotta get with my Quack',
+                    'Never gonna Quack you up, never gonna Quack you down'],
     quacks,
     socket = io();
 
@@ -82,7 +83,9 @@ function getQuackFromArray(quacksArray){
 
 function showQuack(quack){
     ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
-
+    if (quack.hashtag){
+        quack.quack = quack.quack.replace(/(#\w+$|#\w+)/, '<span class="hash">' + '$1' + '</span>');
+    }
     var geolocationName = quack.address;
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
@@ -157,7 +160,6 @@ function deleteQuack(){
     }
     var request = new XMLHttpRequest();
     request.open('DELETE', '/main');
-    console.log(JSON.stringify(this.parentNode.firstChild.id));
     request.send(JSON.stringify(this.parentNode.firstChild.id));
 
     this.parentNode.remove();
