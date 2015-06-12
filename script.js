@@ -1,4 +1,8 @@
 var sendQuack = document.getElementById('sendQuack'),
+    mapDiv = document.getElementById('mapDiv'),
+    quaxDiv = document.getElementById('quaxDiv'),
+    quaxButton = document.getElementById('quaxButton'),
+    mapButton = document.getElementById('mapButton'),
     IDIndex = document.cookie.indexOf('userID'),
     quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15),
     enterQuack = document.getElementById('enterQuack'),
@@ -19,6 +23,14 @@ sendQuack.addEventListener('keydown', function(event){
 }, false);
 sendQuack.addEventListener('mouseover', quaack);
 sendQuack.addEventListener('mouseout', unquaack);
+quaxButton.addEventListener('click', function(){
+    quaxDiv.className = '';
+    mapDiv.className = 'hidden';
+});
+mapButton.addEventListener('click', function(){
+    mapDiv.className = '';
+    quaxDiv.className = 'hidden';
+});
 
 socket.on('quack', function(data){
     showQuack(data[0]);
