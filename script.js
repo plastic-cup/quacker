@@ -69,8 +69,8 @@ function getQuackFromArray(quacksArray){
 }
 
 function showQuack(quack){
-    ducksOnMap({lat: quack.lat, lon: quack.lon});
-    console.log("*"+quack.time.replace("GMT+0100 (BST)", ""));
+    ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
+
     var geolocationName = quack.address;
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';

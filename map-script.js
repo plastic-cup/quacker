@@ -21,7 +21,8 @@ navigator.geolocation.getCurrentPosition(function(position) {
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5
-    }).addTo(map);
+
+}).addTo(map);
 
 });
 
@@ -44,7 +45,7 @@ function ducksOnMap(quackLocation){
         iconAnchor:   [7.5, 7.5], // WidthAnc should be about 0.5% and heighAnc about the same as height
     });
 
-    var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map);
+    var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map).bindPopup(quackLocation.quack).openPopup();
 }
 
 
