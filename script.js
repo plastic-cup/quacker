@@ -16,7 +16,7 @@ var sendQuack = document.getElementById('sendQuack'),
     socket = io();
 
 sendQuack.addEventListener('click', postQuack);
-sendQuack.addEventListener('keydown', function(event){
+enterQuack.addEventListener('keydown', function(event){
     if (event.keyCode === 13){
         postQuack();
     }
