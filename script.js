@@ -63,16 +63,13 @@ function getQuackFromArray(quacksArray){
     });
 }
 
-
-
 function showQuack(quack){
-    //console.log(quack);
+    ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
     var geolocationName = quack.address;
-    console.log(geolocationName);
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + "<br>Near " + geolocationName + " <br>(Lat: " + quack.lat + ", Lon: " + quack.lon + ')</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + "<br>Near <strong>" + geolocationName + " </strong><br>(Lat: <strong>" + quack.lat + "</strong>, Lon: <strong>" + quack.lon + '</strong>)</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');

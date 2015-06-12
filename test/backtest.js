@@ -71,7 +71,7 @@ endpoints.default.apply(null, testReqAndRes({method: 'GET', url: '/style.css'}, 
     var css = fs.readFileSync(__dirname + '/../style.css');
     return function(){
       console.log('can we get the css file?');
-      assert.equal(css.toString().slice(0,10),res.output[0].slice(res.output[0].indexOf('*')).slice(0,10));
+      assert.equal(css.toString().slice(0,10),res.output[2].toString().slice(res.output[2].toString().indexOf('*')).slice(0,10));
     };
 }));
 

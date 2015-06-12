@@ -4,20 +4,21 @@
     margin: 0;
 }
 
-body {
+/*body {
     background-image: url("duckz.jpg");
-}
+}*/
 
 #bar {
-    background-color: #057f63;
     margin: 0;
-    margin-bottom: 3%;
+
+    margin-top: 3%;
+    margin-bottom: 2em;
+    text-align: center;
 }
 
-#bar > h1{
-    text-align: center;
-    font-size: 5em;
-    margin: 0;
+#bar > img{
+    height: 55%;
+
 }
 
 #enterQuack {
@@ -89,4 +90,20 @@ body {
     position : absolute;
     right : 10px;
     top : 10px;
+}
+
+#map{
+    height:40em;
+    width: 70em;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+#positionLat{
+    color:maroon;
+}
+
+#positionLon{
+    color:maroon;
 }
