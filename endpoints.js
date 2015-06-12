@@ -39,7 +39,7 @@ endpoints = function(fake){
             quack = quack && quack.replace(/%22/g, '"').replace(/%3E/g, "&gt;").replace(/%3C/g, "&lt;").replace(/%23/g, '#');
             quack = quack && duckTranslate(quack);
 
-                if (quack.indexOf('#')){
+                if (quack && quack.indexOf('#')){
                     hashtag = quack.match(/#\w+$|#\w+/);
                 }
 
