@@ -10,7 +10,6 @@
 
 #bar {
     margin: 0;
-
     margin-top: 3%;
     margin-bottom: 2em;
     text-align: center;
@@ -23,6 +22,20 @@
 
 #quaxDiv {
     width: 100%;
+}
+
+#toggles {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2.5%;
+}
+
+#toggles > button {
+    border-style: none;
+    font-size: 1.3em;
+    height: 5%;
+    width: 10%;
+    margin-right: 1%;
 }
 
 #enterQuack {
@@ -112,7 +125,7 @@
 #map{
     height:40em;
     width: 70em;
-    margin-top: 10%;
+    margin-top: 2.5%;
     margin-left: auto;
     margin-right: auto;
 
@@ -145,4 +158,7 @@
         width: 90%;
     }
 
+=======
+.hidden {
+    display: none;
 }
