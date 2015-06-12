@@ -64,7 +64,8 @@ function getQuackFromArray(quacksArray){
 }
 
 function showQuack(quack){
-    ducksOnMap({lat: quack.lat, lon: quack.lon});
+    ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
+
     var geolocationName = quack.address;
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
