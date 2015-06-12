@@ -45,11 +45,7 @@ function ducksOnMap(quackLocation){
         iconAnchor:   [7.5, 7.5], // WidthAnc should be about 0.5% and heighAnc about the same as height
     });
 
-<<<<<<< HEAD
     var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map).bindPopup(quackLocation.quack).openPopup();
-=======
-    var marker = L.marker([quackLocation.lat, quackLocation.lon],{icon: quackIcon}).addTo(map);
->>>>>>> a1e26d0bc377f66eb2b5bec6ad141e81a7a12b02
 }
 
 

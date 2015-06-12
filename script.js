@@ -7,11 +7,16 @@ var sendQuack = document.getElementById('sendQuack'),
                     'I\'ll be Quack.', 'Use the Quack, Luke.', 'Quacks. Why\'d it have to be Quacks?',
                     'I have had it with these motherQuacking snakes on this motherQuacking plane!',
                     'I wish I knew how to Quack you.', 'I\'ll Quack what she\'s Quacking.', 'Here\'s Quacking at you, kid.',
-                    'Don\'t cross the Quacks.'],
+                    'Don\'t cross the Quacks.', 'If you wanna be my Quacker, you gotta get with my Quack'],
     quacks,
     socket = io();
 
 sendQuack.addEventListener('click', postQuack);
+sendQuack.addEventListener('keydown', function(event){
+    if (event.keyCode === 13){
+        postQuack();
+    }
+}, false);
 sendQuack.addEventListener('mouseover', quaack);
 sendQuack.addEventListener('mouseout', unquaack);
 
@@ -70,7 +75,7 @@ function showQuack(quack){
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime">Posted on: ' + quack.time + "<br>Near <strong>" + geolocationName + " </strong><br>(Lat: <strong>" + quack.lat + "</strong>, Lon: <strong>" + quack.lon + '</strong>)</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near </span>' + geolocationName + ' <span><br>(Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + ')</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');
