@@ -1,4 +1,8 @@
 var sendQuack = document.getElementById('sendQuack'),
+    mapDiv = document.getElementById('mapDiv'),
+    quaxDiv = document.getElementById('quaxDiv'),
+    quaxButton = document.getElementById('quaxButton'),
+    mapButton = document.getElementById('mapButton'),
     IDIndex = document.cookie.indexOf('userID'),
     quackCookie = document.cookie.slice(IDIndex + 7, IDIndex + 15),
     enterQuack = document.getElementById('enterQuack'),
@@ -12,13 +16,21 @@ var sendQuack = document.getElementById('sendQuack'),
     socket = io();
 
 sendQuack.addEventListener('click', postQuack);
-sendQuack.addEventListener('keydown', function(event){
+enterQuack.addEventListener('keydown', function(event){
     if (event.keyCode === 13){
         postQuack();
     }
 }, false);
 sendQuack.addEventListener('mouseover', quaack);
 sendQuack.addEventListener('mouseout', unquaack);
+quaxButton.addEventListener('click', function(){
+    quaxDiv.className = '';
+    mapDiv.className = 'hidden';
+});
+mapButton.addEventListener('click', function(){
+    mapDiv.className = '';
+    quaxDiv.className = 'hidden';
+});
 
 socket.on('quack', function(data){
     showQuack(data[0]);
@@ -70,12 +82,12 @@ function getQuackFromArray(quacksArray){
 
 function showQuack(quack){
     ducksOnMap({lat: quack.lat, lon: quack.lon, quack: quack.quack});
-
+    console.log(typeof quack.lon);
     var geolocationName = quack.address;
     var quackContainer = document.createElement("div");
     quackContainer.className = 'quack';
     quackContainer.id = quack.userID;
-    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near </span>' + geolocationName + ' <span><br>(Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + ')</p>';
+    quackContainer.innerHTML = '<p id="' + quack.id + '">' + quack.quack + '</p> <p id="quackTime"><br><span>Posted on: </span>' + quack.time.replace(" GMT+0100 (BST)", "") + '<span><br>Near: </span><em>' + geolocationName + ' </em><span><br>Lat: </span>' + quack.lat + '<span>, Lon: </span>' + quack.lon + '</p>';
     quackContainer.addEventListener('mouseenter', showDelete);
     quackContainer.addEventListener('mouseleave', hideDelete);
     var quax = document.getElementById('quax');

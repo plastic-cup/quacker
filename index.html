@@ -2,23 +2,30 @@
     <head>
         <title>Quackerr</title>
         <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <link href='https://fonts.googleapis.com/css?family=Raleway:200,300,600' rel='stylesheet' type='text/css'>
 
     </head>
     <body>
         <div id="bar">
             <img src="./quackerr2.png">
+        </div>
 
+        <div id="toggles"><button id="quaxButton">View Quax</button><button id="mapButton">Map</button></div>
+
+        <div id="quaxDiv">
+            <div id="quackPoster">
+                <textarea id ='enterQuack' type="text" name="name" placeholder="Quack at me bro!" value=""></textarea>
+                <button id='sendQuack'>Quack</button>
+            </div>
+
+            <div id="quax"></div>
         </div>
-        <div id="quackPoster">
-            <textarea id ='enterQuack' type="text" name="name" placeholder="Quack at me bro!" value=""></textarea>
-            <button id='sendQuack'>Quack</button>
+        <div id="mapDiv" class="hidden">
+            <div id="map"></div>
+            <div id="lat"></div>
+            <div id="lon"></div>
         </div>
-        <div id="quax"></div>
-        <div id="map"></div>
-        <div id="lat"></div>
-        <div id="lon"></div>
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
