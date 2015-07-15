@@ -33,8 +33,8 @@ navigator.geolocation.getCurrentPosition(function(position) {
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     maxZoom: 18,
-    id: 'minaorangina.4b7af5fd',
-    accessToken: 'pk.eyJ1IjoibWluYW9yYW5naW5hIiwiYSI6ImEzZjg0YTFmZDQyOWJjZWUzNTUzZWZjMWExZDY1MTUxIn0.fLBy0l7Add3vACuMZH_iFA'
+    id: process.env.MAPBOXID,
+    accessToken: process.env.MAPBOXTOKEN
 }).addTo(map);
 
 function ducksOnMap(quackLocation){
